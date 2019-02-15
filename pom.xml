@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Developed by Matthias Percelay. Created on 15/02/19 13:40.
+  ~ Last modified 15/02/19 02:54
+  ~ Copyright (c) 2019. All rights reserved
+  -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.uca.nucas</groupId>
-    <artifactId>nucas</artifactId>
+    <artifactId>NuCAS</artifactId>
     <version>0.1.0</version>
 
 
