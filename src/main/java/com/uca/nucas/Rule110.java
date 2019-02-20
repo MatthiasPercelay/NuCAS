@@ -6,14 +6,16 @@
 
 package com.uca.nucas;
 
-public class Rule110 implements CA1DRunnable{
+import java.awt.*;
+
+public class Rule110 implements CARunnable1D {
     private int state;
 
     Rule110(int state, int localRuleID) {
         this.state = state;
     }
 
-    public CA1DRunnable createInstance(int state, int localRuleID, EvaluationContext context) {
+    public CARunnable1D createInstance(int state, int localRuleID, EvaluationContext1D context) {
         return new Rule110(state, localRuleID);
     }
 
@@ -36,7 +38,12 @@ public class Rule110 implements CA1DRunnable{
         return false;
     }
 
-    public int runStep(EvaluationContext context) {
+    public Color display() {
+        if (state == 0) return Color.WHITE;
+        else return Color.BLACK;
+    }
+
+    public int runStep(EvaluationContext1D context) {
         if (state == 0) {
             if (context.getNeighborState(-1) == 0) {
                 if (context.getNeighborState(1) == 0) {

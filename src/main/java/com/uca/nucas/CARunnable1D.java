@@ -6,12 +6,14 @@
 
 package com.uca.nucas;
 
+import java.awt.Color;
+
 /**
  * Interface defining all necessary internal operations
  * for simulation of 1D automata
  */
-public interface CA1DRunnable {
-    CA1DRunnable createInstance(int state, int localRuleID, EvaluationContext context);
+public interface CARunnable1D {
+    CARunnable1D createInstance(int state, int localRuleID, EvaluationContext1D context);
 
     int getState();
     void setState(int newState);
@@ -21,5 +23,7 @@ public interface CA1DRunnable {
 
     boolean isInert();
 
-    int runStep(EvaluationContext context);
+    Color display();
+
+    int runStep(EvaluationContext1D context);
 }

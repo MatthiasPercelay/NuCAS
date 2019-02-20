@@ -14,9 +14,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
-public class SimpleRunner implements EvaluationContext {
+public class SimpleRunner implements EvaluationContext1D {
     Rule110[] simulation = new Rule110[201];
     int index;
+
+    public static void main(String[] args) {
+        SimpleRunner runner = new SimpleRunner();
+        runner.run();
+    }
 
     public SimpleRunner() {
         Random rand = new Random();

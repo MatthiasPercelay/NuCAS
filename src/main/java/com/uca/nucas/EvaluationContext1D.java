@@ -10,6 +10,6 @@ package com.uca.nucas;
  * interface defining operations the context needs to provide to automata during
  * simulation
  */
-public interface EvaluationContext {
+public interface EvaluationContext1D {
     int getNeighborState(int offset);
 }
