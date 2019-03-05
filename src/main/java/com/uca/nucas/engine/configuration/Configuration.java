@@ -6,5 +6,11 @@
 
 package com.uca.nucas.engine;
 
-public class Configuration {
+public interface Configuration {
+
+    public int getCell(int index);
+
+    public void setCell(int index, int state);
+
+    public int getSize();
 }
