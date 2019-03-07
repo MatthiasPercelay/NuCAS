@@ -8,7 +8,13 @@ package com.uca.nucas.engine.configuration;
 
 import com.uca.nucas.engine.configuration.Configuration;
 
+/**
+ * Configuration that grows each step to maintain perfect information
+ * the working area is surrounded on both sides by an infinitely repeating default state
+ */
 public class GrowingConfiguration implements Configuration {
+    public static final int GROWING_CONF = 1;
+
     private int[] contents;
     private int defaultState;
     private int growthRadius;
@@ -55,5 +61,10 @@ public class GrowingConfiguration implements Configuration {
     @Override
     public int getStartPoint() {
         return 0;
+    }
+
+    @Override
+    public int getConfType() {
+        return GROWING_CONF;
     }
 }

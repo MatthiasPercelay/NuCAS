@@ -6,8 +6,12 @@
 
 package com.uca.nucas.engine.configuration;
 
-
+/**
+ * Configuration that forms a torus
+ */
 public class WrappingConfiguration implements Configuration {
+    public static final int WRAPPING_CONF = 3;
+
     int[] contents;
 
     public WrappingConfiguration(int[] contents) {
@@ -45,5 +49,10 @@ public class WrappingConfiguration implements Configuration {
     @Override
     public int getStartPoint() {
         return 0;
+    }
+
+    @Override
+    public int getConfType() {
+        return WRAPPING_CONF;
     }
 }

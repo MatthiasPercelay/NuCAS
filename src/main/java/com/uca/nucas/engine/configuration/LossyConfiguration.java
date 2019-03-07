@@ -6,7 +6,12 @@
 
 package com.uca.nucas.engine.configuration;
 
+/**
+ * Configuration that shrinks each step
+ */
 public class LossyConfiguration implements Configuration {
+    public static final int LOSSY_CONF = 2;
+
     int[] contents;
     int startIndex;
     int usefulSize;
@@ -52,5 +57,10 @@ public class LossyConfiguration implements Configuration {
     @Override
     public int getStartPoint() {
         return startIndex;
+    }
+
+    @Override
+    public int getConfType() {
+        return LOSSY_CONF;
     }
 }

@@ -6,6 +6,9 @@
 
 package com.uca.nucas.engine.configuration;
 
+/**
+ * Interface defining operations on configurations
+ */
 public interface Configuration {
 
     /**
@@ -39,4 +42,10 @@ public interface Configuration {
      * @return
      */
     public int getStartPoint();
+
+    /**
+     * returns the type of the configutation
+     * @return
+     */
+    public int getConfType();
 }

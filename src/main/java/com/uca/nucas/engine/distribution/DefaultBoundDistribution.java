@@ -6,6 +6,10 @@
 
 package com.uca.nucas.engine.distribution;
 
+/**
+ * Distribution bound by the same default rule at both ends
+ * => dnu-ca
+ */
 public class DefaultBoundDistribution implements Distribution {
     int[] ruleIDs;
     int defaultRule;
