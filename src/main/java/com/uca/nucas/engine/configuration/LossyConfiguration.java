@@ -6,32 +6,30 @@
 
 package com.uca.nucas.engine.configuration;
 
+import com.uca.nucas.engine.Automaton;
+
 /**
  * Configuration that shrinks each step
  */
-public class LossyConfiguration implements Configuration {
+public class LossyConfiguration extends AbstractConfiguration {
     public static final int LOSSY_CONF = 2;
 
-    int[] contents;
     int startIndex;
     int usefulSize;
     int lostState;
-    int lossRadius;
 
-    public LossyConfiguration(int[] contents, int lostState, int lossRadius) {
-        this.contents = contents;
+    public LossyConfiguration(int[] contents, int lostState) {
+        super(contents);
         this.lostState = lostState;
-        this.lossRadius = lossRadius;
         this.usefulSize = contents.length;
         this.startIndex = 0;
     }
 
-    public LossyConfiguration(LossyConfiguration oldConf, int[] contents) {
-        this.contents = contents;
+    LossyConfiguration(LossyConfiguration oldConf, int[] contents, Automaton automaton) {
+        super(contents);
         this.lostState = oldConf.lostState;
-        this.lossRadius = oldConf.lossRadius;
         this.startIndex = oldConf.startIndex;
-        this.usefulSize = oldConf.usefulSize;
+        this.usefulSize = oldConf.usefulSize - 2 * automaton.getRadius();
     }
 
     @Override
@@ -60,7 +58,21 @@ public class LossyConfiguration implements Configuration {
     }
 
     @Override
-    public int getConfType() {
-        return LOSSY_CONF;
+    public Configuration accept(Automaton automaton) {
+        return new LossyConfiguration(this, shrink(compute(automaton), automaton.getRadius()), automaton);
+    }
+
+    private int[] shrink(int[] contents, int radius) {
+        int size = getInitialSize();
+        int[] res = new int[size];
+
+        for(int i = 0; i < startIndex + radius; i++) {
+            res[i] = lostState;
+            res[size - i] = lostState;
+        }
+        for (int j = 0; j < contents.length; j++) {
+            res[j + radius] = contents[j];
+        }
+        return res;
     }
 }

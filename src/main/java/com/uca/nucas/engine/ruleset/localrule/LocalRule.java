@@ -6,6 +6,8 @@
 
 package com.uca.nucas.engine;
 
+import com.uca.nucas.engine.configuration.Configuration;
+
 /**
  * Interface for local rules
  * may be declared a functional interface later

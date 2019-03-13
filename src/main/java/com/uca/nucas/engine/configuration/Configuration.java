@@ -6,6 +6,8 @@
 
 package com.uca.nucas.engine.configuration;
 
+import com.uca.nucas.engine.Automaton;
+
 /**
  * Interface defining operations on configurations
  */
@@ -17,6 +19,10 @@ public interface Configuration {
      * @return the state of the cell at position index
      */
     public int getCell(int index);
+
+    public default int getRelativeCell(int position, int offset) {
+        return getCell(position + offset);
+    }
 
     /**
      * setter for the state of the cell at position index
@@ -43,9 +49,7 @@ public interface Configuration {
      */
     public int getStartPoint();
 
-    /**
-     * returns the type of the configutation
-     * @return
-     */
-    public int getConfType();
+    public int getDistributionOffset();
+
+    public Configuration accept(Automaton automaton);
 }

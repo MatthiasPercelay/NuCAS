@@ -8,23 +8,34 @@ package com.uca.nucas.engine;
 
 import com.uca.nucas.engine.configuration.Configuration;
 import com.uca.nucas.engine.distribution.Distribution;
+import com.uca.nucas.engine.ruleset.RuleSet;
 
 public class Automaton {
     Alphabet alphabet;
     RuleSet ruleSet;
+    Distribution dist;
+    int radius;
 
-    public Automaton(Alphabet alphabet, RuleSet ruleSet) {
+    public Automaton(Alphabet alphabet, RuleSet ruleSet, Distribution dist, int radius) {
         this.alphabet = alphabet;
         this.ruleSet = ruleSet;
+        this.dist = dist;
+        this.radius = radius;
     }
 
-    /*public Configuration evaluate(Configuration conf, Distribution dist) {
-        int[] res = new int[conf.getSize()];
+    public Configuration evaluate(Configuration conf, Distribution dist) {
+        return conf.accept(this);
+    }
 
-        for (int i = 0; i < conf.getSize(); i++) {
-            res[i] = ruleSet.callRule(dist.get(i), i, conf);
-        }
+    public RuleSet getRuleSet() {
+        return ruleSet;
+    }
 
-        return new Configuration(res);
-    }*/
+    public Distribution getDistribution() {
+        return dist;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
 }

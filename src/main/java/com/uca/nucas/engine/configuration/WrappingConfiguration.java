@@ -6,20 +6,20 @@
 
 package com.uca.nucas.engine.configuration;
 
+import com.uca.nucas.engine.Automaton;
+
 /**
  * Configuration that forms a torus
  */
-public class WrappingConfiguration implements Configuration {
+public class WrappingConfiguration extends AbstractConfiguration {
     public static final int WRAPPING_CONF = 3;
 
-    int[] contents;
-
     public WrappingConfiguration(int[] contents) {
-        this.contents = contents;
+        super(contents);
     }
 
     public WrappingConfiguration(int size) {
-        this.contents = new int[size];
+        super(new int[size]);
     }
 
     @Override
@@ -37,22 +37,7 @@ public class WrappingConfiguration implements Configuration {
     }
 
     @Override
-    public int getSize() {
-        return contents.length;
-    }
-
-    @Override
-    public int getInitialSize() {
-        return getSize();
-    }
-
-    @Override
-    public int getStartPoint() {
-        return 0;
-    }
-
-    @Override
-    public int getConfType() {
-        return WRAPPING_CONF;
+    public Configuration accept(Automaton automaton) {
+        return new WrappingConfiguration(compute(automaton));
     }
 }

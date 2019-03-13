@@ -10,7 +10,7 @@ public class ConfigurationFactory {
 
     public ConfigurationFactory(){};
 
-    public Configuration newFrom(Configuration old, int[] newContents) throws IllegalArgumentException {
+    /*public Configuration newFrom(Configuration old, int[] newContents) throws IllegalArgumentException {
         switch (old.getConfType()) {
             case GrowingConfiguration.GROWING_CONF : {
                 return new GrowingConfiguration((GrowingConfiguration)old, newContents);
@@ -23,5 +23,5 @@ public class ConfigurationFactory {
             }
             default : throw new IllegalArgumentException("Not a supported Configuration type");
         }
-    }
+    }*/
 }

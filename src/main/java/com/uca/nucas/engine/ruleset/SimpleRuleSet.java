@@ -1,10 +1,13 @@
 /*
- * Developed by Matthias Percelay. Created on 02/03/19 13:52.
- * Last modified 02/03/19 13:52
+ * Developed by Matthias Percelay. Created on 11/03/19 07:49.
+ * Last modified 04/03/19 21:03
  * Copyright (c) 2019. All rights reserved
  */
 
-package com.uca.nucas.engine;
+package com.uca.nucas.engine.ruleset;
+
+import com.uca.nucas.engine.ruleset.localrule.LocalRule;
+import com.uca.nucas.engine.configuration.Configuration;
 
 /**
  * concrete implementation of RuleSet that keeps all the rules in an array

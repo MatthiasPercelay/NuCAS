@@ -6,6 +6,18 @@
 
 package com.uca.nucas.engine;
 
-public class Alphabet {
+import java.util.HashSet;
 
+/**
+ * represents an alphabet over which automata are defined
+ */
+public class Alphabet {
+    HashSet<Integer> states;
+
+    public Alphabet(int[] states) {
+        this.states = new HashSet<Integer>();
+        for (int i = 0; i < states.length; i++) {
+            this.states.add(states[i]);
+        }
+    }
 }
