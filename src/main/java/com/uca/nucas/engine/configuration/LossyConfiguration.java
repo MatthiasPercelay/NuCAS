@@ -34,13 +34,6 @@ public class LossyConfiguration extends AbstractConfiguration {
         this.usefulSize = oldConf.usefulSize - 2 * automaton.getRadius();
     }
 
-    LossyConfiguration(int[] contents, int startIndex, int usefulSize, int lostState) {
-        super(contents);
-        this.startIndex = startIndex;
-        this.usefulSize = usefulSize;
-        this.lostState = lostState;
-    }
-
     @Override
     public int getCell(int index) {
         return contents[index];
@@ -69,7 +62,6 @@ public class LossyConfiguration extends AbstractConfiguration {
     @Override
     public Configuration accept(Automaton automaton) {
         return new LossyConfiguration(this, compute(automaton), automaton);
-        //return new LossyConfiguration(compute(automaton), startIndex + 1, usefulSize - 2, lostState);
     }
 
     private int[] shrink(int[] contents, int radius) {

@@ -7,6 +7,8 @@
 package com.uca.nucas.engine.configuration;
 
 import com.uca.nucas.engine.Automaton;
+import com.uca.nucas.engine.distribution.Distribution;
+import com.uca.nucas.engine.ruleset.RuleSet;
 
 /**
  * Configuration that grows each step to maintain perfect information
@@ -56,7 +58,7 @@ public class GrowingConfiguration extends AbstractConfiguration {
 
     @Override
     public GrowingConfiguration accept(Automaton automaton) {
-        return new GrowingConfiguration(this, grow(compute(automaton), automaton.getRadius()), automaton);
+        return new GrowingConfiguration(this, compute(automaton), automaton);
     }
 
     private int[] grow(int[] contents, int radius) {
@@ -67,6 +69,26 @@ public class GrowingConfiguration extends AbstractConfiguration {
         }
         for (int i = 0; i < contents.length; i++) {
             res[radius + i] = contents[i];
+        }
+        return res;
+    }
+
+    int[] compute(Automaton automaton) {
+        int radius = automaton.getRadius();
+        int offset = getDistributionOffset();
+        RuleSet globalRule = automaton.getRuleSet();
+        Distribution dist = automaton.getDistribution();
+
+        int[] res = new int[getSize() + 2 * radius];
+
+        for (int i = 0; i < radius; i++) {
+            res[i] = defaultState;
+        }
+        for (int i = radius; i < getSize() + radius; i++) {
+            res[i] = globalRule.callRule(dist.getLocalRule(i - offset), i, this);
+        }
+        for (int i = getSize() + radius; i < res.length; i++) {
+            res[i] = defaultState;
         }
         return res;
     }
