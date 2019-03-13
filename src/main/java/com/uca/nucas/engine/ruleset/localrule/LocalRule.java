@@ -1,10 +1,10 @@
 /*
- * Developed by Matthias Percelay. Created on 28/02/19 16:46.
- * Last modified 28/02/19 16:46
+ * Developed by Matthias Percelay. Created on 11/03/19 07:51.
+ * Last modified 04/03/19 21:03
  * Copyright (c) 2019. All rights reserved
  */
 
-package com.uca.nucas.engine;
+package com.uca.nucas.engine.ruleset.localrule;
 
 import com.uca.nucas.engine.configuration.Configuration;
 

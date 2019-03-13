@@ -23,7 +23,7 @@ public class Automaton {
         this.radius = radius;
     }
 
-    public Configuration evaluate(Configuration conf, Distribution dist) {
+    public Configuration evaluate(Configuration conf) {
         return conf.accept(this);
     }
 

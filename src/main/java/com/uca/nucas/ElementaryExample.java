@@ -37,7 +37,7 @@ public class ElementaryExample {
         Scanner in = new Scanner(System.in);
         int confType = 0;
         while (confType == 0) {
-            String type = in.nextLine();
+            String type = in.next();
             if (type.equalsIgnoreCase("growing")) confType = 1;
             else if (type.equalsIgnoreCase("lossy")) confType = 2;
             else if (type.equalsIgnoreCase("wrapping")) confType = 3;
@@ -71,11 +71,9 @@ public class ElementaryExample {
         }
 
         Configuration conf;
-        switch (confType) {
-            case 1: conf = new GrowingConfiguration(contents, 0);
-            case 2: conf = new LossyConfiguration(contents, -1);
-            default: conf = new WrappingConfiguration(contents);
-        }
+        if (confType == 1) conf = new GrowingConfiguration(contents, 0);
+        else if (confType == 2) conf = new LossyConfiguration(contents, -1);
+        else conf = new WrappingConfiguration(contents);
 
         ElementaryRule rule = new ElementaryRule(code);
         SimpleRuleSet globalRule = new SimpleRuleSet(new LocalRule[] {rule});
