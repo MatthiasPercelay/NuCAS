@@ -58,7 +58,7 @@ public abstract class AbstractConfiguration implements Configuration {
         int ruleOffset = getDistributionOffset();
 
         for (int i = getStartPoint(); i < end; i++) {
-            res[i] = automaton.getRuleSet().callRule(automaton.getDistribution().getLocalRule(i - ruleOffset), i, this);
+            res[i] = automaton.getDistribution().getLocalRule(i - ruleOffset).evaluate(i, this);
         }
 
         return res;

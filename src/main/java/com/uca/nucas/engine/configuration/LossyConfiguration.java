@@ -83,7 +83,6 @@ public class LossyConfiguration extends AbstractConfiguration {
         int radius = automaton.getRadius();
         int start = getStartPoint() + radius;
         int end = start + getSize() - 2 * radius;
-        RuleSet globalRule = automaton.getRuleSet();
         Distribution dist = automaton.getDistribution();
 
         int[] res = new int[getInitialSize()];
@@ -92,7 +91,7 @@ public class LossyConfiguration extends AbstractConfiguration {
             res[i] = lostState;
         }
         for (int i = start; i < end; i++) {
-            res[i] = globalRule.callRule(dist.getLocalRule(i), i, this);
+            res[i] = dist.getLocalRule(i).evaluate(i, this);
         }
         for (int i = end; i < getInitialSize(); i++) {
             res[i] = lostState;

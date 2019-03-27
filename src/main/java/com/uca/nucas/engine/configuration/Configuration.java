@@ -20,6 +20,12 @@ public interface Configuration {
      */
     public int getCell(int index);
 
+    /**
+     * returns the state of the cell at position + offset
+     * @param position
+     * @param offset
+     * @return
+     */
     public default int getRelativeCell(int position, int offset) {
         return getCell(position + offset);
     }

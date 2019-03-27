@@ -21,4 +21,10 @@ public interface LocalRule {
      * @return
      */
     public int evaluate(int position, Configuration conf);
+
+    /**
+     * provides the radius of this rule
+     * @return the integer radius of the rule
+     */
+    public int getRadius();
 }

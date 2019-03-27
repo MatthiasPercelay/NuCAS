@@ -6,19 +6,26 @@
 
 package com.uca.nucas.engine.distribution;
 
+import com.uca.nucas.engine.ruleset.localrule.LocalRule;
+
 /**
  * Distribution that only supports a single rule
  * => classical CA
  */
 public class UniformDistribution implements Distribution {
-    int ruleID;
+    LocalRule rule;
 
-    public UniformDistribution(int ruleID) {
-        this.ruleID = ruleID;
+    public UniformDistribution(LocalRule rule) {
+        this.rule = rule;
     }
 
     @Override
-    public int getLocalRule(int index) {
-        return ruleID;
+    public LocalRule getLocalRule(int index) {
+        return rule;
+    }
+
+    @Override
+    public int getRadius() {
+        return rule.getRadius();
     }
 }

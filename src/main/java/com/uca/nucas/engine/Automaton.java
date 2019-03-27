@@ -12,23 +12,17 @@ import com.uca.nucas.engine.ruleset.RuleSet;
 
 public class Automaton {
     Alphabet alphabet;
-    RuleSet ruleSet;
     Distribution dist;
     int radius;
 
-    public Automaton(Alphabet alphabet, RuleSet ruleSet, Distribution dist, int radius) {
+    public Automaton(Alphabet alphabet, Distribution dist, int radius) {
         this.alphabet = alphabet;
-        this.ruleSet = ruleSet;
         this.dist = dist;
         this.radius = radius;
     }
 
     public Configuration evaluate(Configuration conf) {
         return conf.accept(this);
-    }
-
-    public RuleSet getRuleSet() {
-        return ruleSet;
     }
 
     public Distribution getDistribution() {

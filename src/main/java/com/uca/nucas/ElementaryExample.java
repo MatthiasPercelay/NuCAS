@@ -63,6 +63,7 @@ public class ElementaryExample {
             System.out.println("Please input a valid Wolfram code");
             code = in.nextInt();
         }
+        in.close();
 
         int[] contents = new int[size];
         Random rand = new Random();

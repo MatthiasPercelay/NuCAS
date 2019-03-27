@@ -6,22 +6,23 @@
 
 package com.uca.nucas.engine.distribution;
 
+import com.uca.nucas.engine.ruleset.localrule.LocalRule;
+
 /**
  * Distribution bound by the same default rule at both ends
  * => dnu-ca
  */
-public class DefaultBoundDistribution implements Distribution {
-    int[] ruleIDs;
-    int defaultRule;
+public class DefaultBoundDistribution extends AbstractDistribution {
+    LocalRule defaultRule;
 
-    public DefaultBoundDistribution(int[] ruleIDs, int defaultRule) {
-        this.ruleIDs = ruleIDs;
+    public DefaultBoundDistribution(LocalRule[] rules, LocalRule defaultRule) {
+        super(rules);
         this.defaultRule = defaultRule;
     }
 
     @Override
-    public int getLocalRule(int index) {
-        if (index < 0 || index >= ruleIDs.length) return defaultRule;
-        else return ruleIDs[index];
+    public LocalRule getLocalRule(int index) {
+        if (index < 0 || index >= localRules.length) return defaultRule;
+        else return localRules[index];
     }
 }

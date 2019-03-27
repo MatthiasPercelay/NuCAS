@@ -6,6 +6,8 @@
 
 package com.uca.nucas.engine.distribution;
 
+import com.uca.nucas.engine.ruleset.localrule.LocalRule;
+
 /**
  * Interface defining operations on distributions of rules
  */
@@ -16,5 +18,7 @@ public interface Distribution {
      * @param index position in the distribution
      * @return id of local rule
      */
-    public int getLocalRule(int index);
+    public LocalRule getLocalRule(int index);
+
+    public int getRadius();
 }

@@ -76,7 +76,6 @@ public class GrowingConfiguration extends AbstractConfiguration {
     int[] compute(Automaton automaton) {
         int radius = automaton.getRadius();
         int offset = getDistributionOffset();
-        RuleSet globalRule = automaton.getRuleSet();
         Distribution dist = automaton.getDistribution();
 
         int[] res = new int[getSize() + 2 * radius];
@@ -85,7 +84,7 @@ public class GrowingConfiguration extends AbstractConfiguration {
             res[i] = defaultState;
         }
         for (int i = radius; i < getSize() + radius; i++) {
-            res[i] = globalRule.callRule(dist.getLocalRule(i - offset), i, this);
+            res[i] = dist.getLocalRule(i - offset).evaluate(i, this);
         }
         for (int i = getSize() + radius; i < res.length; i++) {
             res[i] = defaultState;

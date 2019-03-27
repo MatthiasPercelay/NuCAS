@@ -6,33 +6,30 @@
 
 package com.uca.nucas.engine.distribution;
 
+import com.uca.nucas.engine.ruleset.localrule.LocalRule;
+
 /**
  * Distribution bound by a different periodic region at each end
  * => pnu-ca
  */
-public class PeriodicBoundDistribution implements Distribution{
-    int[] centerRules;
-    int[] leftPattern;
-    int[] rightPattern;
-    int leftPeriod;
-    int rightPeriod;
+public class PeriodicBoundDistribution extends AbstractDistribution{
+    LocalRule[] leftPattern;
+    LocalRule[] rightPattern;
 
-    public PeriodicBoundDistribution(int[] centerRules, int[] leftPattern, int[] rightPattern, int leftPeriod, int rightPeriod) {
-        this.centerRules = centerRules;
-        this.leftPattern = leftPattern;
-        this.rightPattern = rightPattern;
-        this.leftPeriod = leftPeriod;
-        this.rightPeriod = rightPeriod;
+    public PeriodicBoundDistribution(LocalRule[] centerRules, LocalRule[] leftPattern, LocalRule[] rightPattern) {
+        super(centerRules);
+        this.leftPattern = leftPattern.clone();
+        this.rightPattern = rightPattern.clone();
     }
 
     @Override
-    public int getLocalRule(int index) {
+    public LocalRule getLocalRule(int index) {
         if (index < 0) {
-            return leftPattern[Math.floorMod(Math.abs(index), leftPeriod)];
-        } else if (index >= centerRules.length) {
-            return rightPattern[(index - centerRules.length) % rightPeriod];
+            return leftPattern[Math.floorMod(Math.abs(index), leftPattern.length)];
+        } else if (index >= localRules.length) {
+            return rightPattern[(index - localRules.length) % rightPattern.length];
         } else {
-            return centerRules[index];
+            return localRules[index];
         }
     }
 }

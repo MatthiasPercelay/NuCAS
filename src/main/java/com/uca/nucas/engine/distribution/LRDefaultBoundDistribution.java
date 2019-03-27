@@ -6,25 +6,26 @@
 
 package com.uca.nucas.engine.distribution;
 
+import com.uca.nucas.engine.ruleset.localrule.LocalRule;
+
 /**
  * Distribution bound by a different default rule at each end
  * => period 1 pnu-ca
  */
-public class LRDefaultBoundDistribution implements Distribution{
-    int[] ruleIDs;
-    int leftDefault;
-    int rightDefault;
+public class LRDefaultBoundDistribution extends AbstractDistribution{
+    LocalRule leftDefault;
+    LocalRule rightDefault;
 
-    public LRDefaultBoundDistribution(int[] ruleIDs, int leftDefault, int rightDefault) {
-        this.ruleIDs = ruleIDs;
+    public LRDefaultBoundDistribution(LocalRule[] rules, LocalRule leftDefault, LocalRule rightDefault) {
+        super(rules);
         this.leftDefault = leftDefault;
         this.rightDefault = rightDefault;
     }
 
     @Override
-    public int getLocalRule(int index) {
+    public LocalRule getLocalRule(int index) {
         if (index < 0) return leftDefault;
-        else if (index >= ruleIDs.length) return rightDefault;
-        else return ruleIDs[index];
+        else if (index >= localRules.length) return rightDefault;
+        else return localRules[index];
     }
 }
