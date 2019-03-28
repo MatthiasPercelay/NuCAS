@@ -8,7 +8,6 @@ package com.uca.nucas.engine.configuration;
 
 import com.uca.nucas.engine.Automaton;
 import com.uca.nucas.engine.distribution.Distribution;
-import com.uca.nucas.engine.ruleset.RuleSet;
 
 /**
  * Configuration that shrinks each step
@@ -17,26 +16,30 @@ public class LossyConfiguration extends AbstractConfiguration {
     public static final int LOSSY_CONF = 2;
 
     int startIndex;
-    int usefulSize;
+    int endIndex;
+    int initialSize;
     int lostState;
 
     public LossyConfiguration(int[] contents, int lostState) {
         super(contents);
         this.lostState = lostState;
-        this.usefulSize = contents.length;
+        this.initialSize = contents.length;
         this.startIndex = 0;
+        this.endIndex = this.initialSize;
     }
 
     LossyConfiguration(LossyConfiguration oldConf, int[] contents, Automaton automaton) {
         super(contents);
         this.lostState = oldConf.lostState;
-        this.startIndex = oldConf.startIndex + automaton.getRadius();
-        this.usefulSize = oldConf.usefulSize - 2 * automaton.getRadius();
+        this.initialSize = oldConf.initialSize;
+        this.startIndex = Math.min(initialSize, oldConf.startIndex + automaton.getRadius());
+        this.endIndex = Math.max(0, oldConf.endIndex - automaton.getRadius());
     }
 
     @Override
     public int getCell(int index) {
-        return contents[index];
+        if (index >= startIndex && index < endIndex) return contents[index - startIndex];
+        else return lostState;
     }
 
     @Override
@@ -46,12 +49,12 @@ public class LossyConfiguration extends AbstractConfiguration {
 
     @Override
     public int getSize() {
-        return usefulSize;
+        return Math.max(0, endIndex - startIndex);
     }
 
     @Override
     public int getInitialSize() {
-        return contents.length;
+        return initialSize;
     }
 
     @Override
@@ -85,9 +88,13 @@ public class LossyConfiguration extends AbstractConfiguration {
         int end = start + getSize() - 2 * radius;
         Distribution dist = automaton.getDistribution();
 
-        int[] res = new int[getInitialSize()];
+        int[] res = new int[Math.max(0, end - start + 1)];
 
-        for (int i = 0; i < start; i++) {
+        for (int i = 0; i < res.length; i++) {
+            res[i] = dist.getLocalRule(i + start).evaluate(i + start, this);
+        }
+
+        /*for (int i = 0; i < start; i++) {
             res[i] = lostState;
         }
         for (int i = start; i < end; i++) {
@@ -95,7 +102,8 @@ public class LossyConfiguration extends AbstractConfiguration {
         }
         for (int i = end; i < getInitialSize(); i++) {
             res[i] = lostState;
-        }
+        }*/
+
         return res;
     }
 }

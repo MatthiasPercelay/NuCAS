@@ -28,4 +28,9 @@ public class ElementaryRule implements LocalRule {
         if (conf.getRelativeCell(position, 1) == 1) index += 1;
         return transitions[index];
     }
+
+    @Override
+    public int getRadius() {
+        return 1;
+    }
 }
