@@ -6,7 +6,9 @@
 
 package com.uca.nucas.engine;
 
-import java.awt.*;
+
+import javafx.scene.paint.Color;
+
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -31,7 +33,7 @@ public class Alphabet {
         if (colors.containsKey(state)) {
             return colors.get(state);
         } else {
-            return Color.DARK_GRAY;
+            return Color.DARKGRAY;
         }
     }
 

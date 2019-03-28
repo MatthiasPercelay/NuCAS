@@ -1,10 +1,10 @@
 /*
- * Developed by Matthias Percelay. Created on 27/03/19 18:57.
- * Last modified 14/03/19 02:20
+ * Developed by Matthias Percelay. Created on 27/03/19 19:25.
+ * Last modified 27/03/19 18:59
  * Copyright (c) 2019. All rights reserved
  */
 
-package com.uca.nucas.gui.main;
+package com.uca.nucas.gui;
 
 
 import javafx.application.Application;

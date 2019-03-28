@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<!--
+  ~ Developed by Matthias Percelay. Created on 28/03/19 03:35.
+  ~ Last modified 28/03/19 03:35
+  ~ Copyright (c) 2019. All rights reserved
+  -->
+
+<TabPane fx:id="leftPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="474.0" prefWidth="215.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="com.uca.nucas.gui.leftpanel.LeftPanelPresenter">
+  <tabs>
+    <Tab fx:id="elementaryTab" text="Elementary">
+         <content>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0">
+               <children>
+                  <HBox prefHeight="30.0" prefWidth="210.0">
+                     <children>
+                        <Label prefHeight="30.0" prefWidth="81.0" text="Wolfram code :">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="elementaryCodeField" prefHeight="26.0" prefWidth="120.0">
+                           <HBox.margin>
+                              <Insets left="2.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="30.0" prefWidth="210.0">
+                     <children>
+                        <Label prefHeight="30.0" prefWidth="65.0" text="config. size :" />
+                        <TextField fx:id="configSizeField" prefHeight="26.0" prefWidth="134.0" text="1000">
+                           <HBox.margin>
+                              <Insets left="2.0" top="2.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Button fx:id="generateRandomButton" mnemonicParsing="false" text="Generate random configuration" />
+               </children>
+               <padding>
+                  <Insets left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </VBox>
+         </content>
+    </Tab>
+  </tabs>
+</TabPane>

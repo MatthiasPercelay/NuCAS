@@ -1,10 +1,10 @@
 /*
- * Developed by Matthias Percelay. Created on 14/03/19 10:29.
- * Last modified 14/03/19 10:29
+ * Developed by Matthias Percelay. Created on 27/03/19 18:58.
+ * Last modified 14/03/19 10:53
  * Copyright (c) 2019. All rights reserved
  */
 
-package com.uca.nucas.gui;
+package com.uca.nucas.gui.utils;
 
 import com.uca.nucas.engine.Automaton;
 import com.uca.nucas.engine.configuration.Configuration;

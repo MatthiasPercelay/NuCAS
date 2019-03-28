@@ -16,9 +16,9 @@ import com.uca.nucas.engine.distribution.UniformDistribution;
 import com.uca.nucas.engine.ruleset.SimpleRuleSet;
 import com.uca.nucas.engine.ruleset.localrule.ElementaryRule;
 import com.uca.nucas.engine.ruleset.localrule.LocalRule;
+import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -77,24 +77,23 @@ public class ElementaryExample {
         else conf = new WrappingConfiguration(contents);
 
         ElementaryRule rule = new ElementaryRule(code);
-        SimpleRuleSet globalRule = new SimpleRuleSet(new LocalRule[] {rule});
-        UniformDistribution dist = new UniformDistribution(0);
+        UniformDistribution dist = new UniformDistribution(rule);
 
         Alphabet alphabet = new Alphabet(new int[] {0, 1, -1});
         alphabet.setColor(1, Color.BLACK);
-        alphabet.setColor(-1, Color.DARK_GRAY);
+        alphabet.setColor(-1, Color.DARKGRAY);
 
-        Automaton automaton = new Automaton(alphabet, globalRule, dist, 1);
+        Automaton automaton = new Automaton(alphabet, dist, 1);
 
         BufferedImage img = new BufferedImage(size, steps + 1, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < size; i++) {
-            img.setRGB(i, 0, alphabet.getColor(conf.getCell(i)).getRGB());
+            img.setRGB(i, 0, FXToAWT(alphabet.getColor(conf.getCell(i))).getRGB());
         }
 
         for (int y = 1; y < steps; y++) {
             conf = automaton.evaluate(conf);
             for (int x = 0; x < size; x++) {
-                img.setRGB(x, y, alphabet.getColor(conf.getCell(x)).getRGB());
+                img.setRGB(x, y, FXToAWT(alphabet.getColor(conf.getCell(x))).getRGB());
             }
         }
 
@@ -104,5 +103,13 @@ public class ElementaryExample {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static java.awt.Color FXToAWT(Color color) {
+        return new java.awt.Color(
+                (float)color.getRed(),
+                (float)color.getGreen(),
+                (float)color.getBlue(),
+                (float)color.getOpacity());
     }
 }
