@@ -26,6 +26,14 @@
                     <include>**/*.properties</include>
                 </includes>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.fxml</include>
+                    <include>**/*.css</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <plugin>
@@ -33,6 +41,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
+                    <release>11</release>
                     <source>1.11</source>
                     <target>1.11</target>
                 </configuration>
@@ -54,7 +63,7 @@
         <dependency>
             <groupId>com.airhacks</groupId>
             <artifactId>afterburner.fx</artifactId>
-            <version>1.6.0</version>
+            <version>1.7.0</version>
         </dependency>
     </dependencies>
 

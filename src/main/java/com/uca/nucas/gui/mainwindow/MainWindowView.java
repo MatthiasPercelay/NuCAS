@@ -4,7 +4,7 @@
  * Copyright (c) 2019. All rights reserved
  */
 
-package com.uca.nucas.gui.main;
+package com.uca.nucas.gui.mainwindow;
 
 import com.airhacks.afterburner.views.FXMLView;
 

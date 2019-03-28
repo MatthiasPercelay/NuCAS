@@ -4,7 +4,7 @@
  * Copyright (c) 2019. All rights reserved
  */
 
-package com.uca.nucas.gui.main;
+package com.uca.nucas.gui.mainwindow;
 
 /**
  * Main controller class for the gui
