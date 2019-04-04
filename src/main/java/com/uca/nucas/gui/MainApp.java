@@ -7,8 +7,9 @@
 package com.uca.nucas.gui;
 
 
-import com.uca.nucas.gui.mainwindow.MainWindowView;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -22,9 +23,8 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        MainWindowView mainWindow = new MainWindowView();
-        //Parent root = FXMLLoader.load(getClass().getResource("/mainwindow/mainwindow.fxml"));
-        Scene scene = new Scene(mainWindow.getView());
+        Parent root = FXMLLoader.load(getClass().getResource("/mainwindow/mainwindow.fxml"));
+        Scene scene = new Scene(root);
 
         stage.setTitle("NuCAS");
         stage.setScene(scene);

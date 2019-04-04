@@ -17,7 +17,7 @@ import javafx.scene.paint.Color;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class CanvasPresenter implements Initializable {
+public class CanvasController {
 
     @FXML
     ScrollPane canvasPane;
@@ -27,11 +27,6 @@ public class CanvasPresenter implements Initializable {
 
     private GraphicsContext ctx = null;
     private int currentDrawHeight = 0;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        ctx = canvas.getGraphicsContext2D();
-    }
 
     public void drawLine(int lineHeight, Color[] content) {
         PixelWriter pw = ctx.getPixelWriter();

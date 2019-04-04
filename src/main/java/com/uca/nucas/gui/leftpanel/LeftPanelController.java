@@ -16,7 +16,7 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LeftPanelPresenter implements Initializable {
+public class LeftPanelController implements Initializable {
 
     @FXML
     private TabPane leftPanel;

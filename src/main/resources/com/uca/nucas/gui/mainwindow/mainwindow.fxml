@@ -14,7 +14,7 @@
   ~ Copyright (c) 2019. All rights reserved
   -->
 
-<BorderPane fx:id="hostWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.main.MainWindow">
+<BorderPane fx:id="hostWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.mainwindow.MainWindow">
    <top>
       <VBox fx:id="top" prefHeight="66.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>

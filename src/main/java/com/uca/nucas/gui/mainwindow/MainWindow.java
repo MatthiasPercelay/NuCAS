@@ -9,8 +9,6 @@ package com.uca.nucas.gui.mainwindow;
 /**
  * Main controller class for the gui
  */
-import com.uca.nucas.gui.canvas.CanvasView;
-import com.uca.nucas.gui.leftpanel.LeftPanelView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
@@ -21,7 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class MainWindow implements Initializable {
+public class MainWindow {
 
     @FXML
     private BorderPane hostWindow;
@@ -40,14 +38,6 @@ public class MainWindow implements Initializable {
 
     @FXML
     private AnchorPane left;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        CanvasView centerView = new CanvasView();
-        center.getChildren().add(centerView.getView());
-        LeftPanelView leftPanelView = new LeftPanelView();
-        left.getChildren().add(leftPanelView.getView());
-    }
 
     /*void buildAutomaton(int code) {
         ElementaryRule rule = new ElementaryRule(code);

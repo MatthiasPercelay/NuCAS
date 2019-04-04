@@ -15,7 +15,7 @@
   ~ Copyright (c) 2019. All rights reserved
   -->
 
-<TabPane fx:id="leftPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="474.0" prefWidth="215.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="com.uca.nucas.gui.leftpanel.LeftPanelPresenter">
+<TabPane fx:id="leftPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="474.0" prefWidth="215.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="com.uca.nucas.gui.leftpanel.LeftPanelController">
   <tabs>
     <Tab fx:id="elementaryTab" text="Elementary">
          <content>
