@@ -16,24 +16,22 @@ import com.uca.nucas.engine.configuration.WrappingConfiguration;
 import com.uca.nucas.engine.distribution.Distribution;
 import com.uca.nucas.engine.distribution.UniformDistribution;
 import com.uca.nucas.engine.ruleset.localrule.ElementaryRule;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-import java.awt.event.ActionEvent;
-import java.net.URL;
 import java.util.Random;
-import java.util.ResourceBundle;
 
 
 public class MainWindow {
+
+    @FXML
+    public ChoiceBox<String> pixelSizeBox;
 
     private int pixelSize = 4;
 
@@ -76,6 +74,13 @@ public class MainWindow {
         model = Model.getModelInstance();
         canvasPaneController.setModel(model);
         canvasPaneController.ctx = canvasPaneController.canvas.getGraphicsContext2D();
+
+        pixelSizeBox.getSelectionModel()
+                .selectedItemProperty()
+                .addListener( (ObservableValue<? extends String> observable, String oldValue, String newValue) ->
+                {
+                    pixelSize = Integer.parseInt(newValue);
+                });
     }
 
     void buildAutomaton() {
