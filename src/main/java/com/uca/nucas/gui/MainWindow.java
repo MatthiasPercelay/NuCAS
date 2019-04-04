@@ -21,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -54,7 +55,7 @@ public class MainWindow {
     Model model = null;
 
     @FXML
-    public ScrollPane canvasPane;
+    public AnchorPane canvasPane;
 
     @FXML
     public CanvasController canvasPaneController;
@@ -74,6 +75,7 @@ public class MainWindow {
     public void initialize() {
         model = Model.getModelInstance();
         canvasPaneController.setModel(model);
+        canvasPaneController.ctx = canvasPaneController.canvas.getGraphicsContext2D();
     }
 
     void buildAutomaton() {
@@ -85,6 +87,7 @@ public class MainWindow {
         Automaton automaton = new Automaton(alphabet, dist, 1);
 
         model.setAutomaton(automaton);
+        System.out.println("Automaton added to model");
     }
 
     void buildConfiguration() {
@@ -95,6 +98,7 @@ public class MainWindow {
         }
         Configuration conf = new WrappingConfiguration(contents);
         model.setStartingConfiguration(conf);
+        System.out.println("Configuration added to model");
     }
 
     public void generateButtonFired() {
@@ -103,12 +107,16 @@ public class MainWindow {
         model.setMaxSteps(Integer.parseInt(stepsField.getText()));
         canvasPaneController.setCanvasHeight(pixelSize * Integer.parseInt(stepsField.getText()));
         canvasPaneController.setCanvasWidth(pixelSize * Integer.parseInt(widthField.getText()));
-        canvasPaneController.clearCanvas();
+        //canvasPaneController.clearCanvas();
     }
 
     public void runButtonFired() {
         model.runAutomaton();
+        System.out.println("Automaton run");
         drawAutomaton();
+        //canvasPaneController.ctx.setFill(Color.DARKBLUE);
+        //canvasPaneController.ctx.fillRect(50,50,200,200);
+        //canvasPaneController.ctx.drawImage(new Image("/exampleimage.png",400, 400,false,false),0,0);
     }
 
     public void drawAutomaton() {

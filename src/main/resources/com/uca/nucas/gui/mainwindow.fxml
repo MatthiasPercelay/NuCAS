@@ -24,7 +24,9 @@
       <AnchorPane fx:id="right" prefHeight="334.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </right>
    <center>
-       <fx:include fx:id="canvasPane" source="canvas.fxml" />
+       <AnchorPane fx:id="center" BorderPane.alignment="CENTER">
+           <fx:include fx:id="canvasPane" source="canvas.fxml" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+       </AnchorPane>
    </center>
    <left>
       <AnchorPane fx:id="left" prefHeight="334.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
@@ -57,7 +59,7 @@
                   <TextField fx:id="codeField" promptText="code" text="110" />
                   <TextField fx:id="stepsField" promptText="max steps" text="200" />
                   <TextField fx:id="widthField" promptText="width" text="200" />
-                  <Button fx:id="runButton" mnemonicParsing="false" text="run" />
+                  <Button fx:id="runButton" mnemonicParsing="false" onAction="#runButtonFired" text="run" />
               </items>
             </ToolBar>
          </children>

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Model {
     private static Model modelInstance = null;
 
-    private ArrayList<Configuration> spaceTimeDiagram;
+    private ArrayList<Configuration> spaceTimeDiagram = new ArrayList<>();
     private Configuration startingConfiguration;
     private Automaton automaton;
     private int maxSteps;

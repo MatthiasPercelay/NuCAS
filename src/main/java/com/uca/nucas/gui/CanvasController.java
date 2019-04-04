@@ -12,6 +12,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.PixelWriter;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
@@ -22,17 +23,16 @@ public class CanvasController {
     private Model model = null;
 
     @FXML
-    ScrollPane canvasPane;
+    AnchorPane canvasPane;
 
     @FXML
     Canvas canvas;
 
-    private GraphicsContext ctx = null;
+    public GraphicsContext ctx = null;
     private int currentDrawHeight = 0;
 
     public void drawLine(int lineHeight, Color[] content) {
         PixelWriter pw = ctx.getPixelWriter();
-        //PixelFormat<IntBuffer> pixelFormat = PixelFormat.getIntArgbInstance();
 
         for (int i = 0; i < content.length; i++) {
             pw.setColor(i, lineHeight, content[i]);
@@ -65,5 +65,9 @@ public class CanvasController {
 
     public void setModel(Model model) {
         this.model = model;
+    }
+
+    public void ping() {
+        System.out.println("canvas controller pinged");
     }
 }
