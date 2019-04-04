@@ -105,18 +105,16 @@ public class MainWindow {
         buildAutomaton();
         buildConfiguration();
         model.setMaxSteps(Integer.parseInt(stepsField.getText()));
+        model.clearSTDiagram();
         canvasPaneController.setCanvasHeight(pixelSize * Integer.parseInt(stepsField.getText()));
         canvasPaneController.setCanvasWidth(pixelSize * Integer.parseInt(widthField.getText()));
-        //canvasPaneController.clearCanvas();
+        canvasPaneController.clearCanvas();
     }
 
     public void runButtonFired() {
         model.runAutomaton();
         System.out.println("Automaton run");
         drawAutomaton();
-        //canvasPaneController.ctx.setFill(Color.DARKBLUE);
-        //canvasPaneController.ctx.fillRect(50,50,200,200);
-        //canvasPaneController.ctx.drawImage(new Image("/exampleimage.png",400, 400,false,false),0,0);
     }
 
     public void drawAutomaton() {

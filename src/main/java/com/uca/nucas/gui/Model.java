@@ -34,6 +34,10 @@ public class Model {
         this.automaton = automaton;
     }
 
+    public void clearSTDiagram() {
+        spaceTimeDiagram = new ArrayList<>();
+    }
+
     public void setStartingConfiguration(Configuration startingConfiguration) {
         this.startingConfiguration = startingConfiguration;
     }
