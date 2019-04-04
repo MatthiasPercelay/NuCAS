@@ -4,7 +4,7 @@
  * Copyright (c) 2019. All rights reserved
  */
 
-package com.uca.nucas;
+package com.uca.nucas.utils;
 
 import com.uca.nucas.engine.Alphabet;
 import com.uca.nucas.engine.Automaton;

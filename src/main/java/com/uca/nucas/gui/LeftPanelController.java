@@ -4,7 +4,7 @@
  * Copyright (c) 2019. All rights reserved
  */
 
-package com.uca.nucas.gui.leftpanel;
+package com.uca.nucas.gui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

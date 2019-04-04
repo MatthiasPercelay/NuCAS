@@ -4,7 +4,7 @@
  * Copyright (c) 2019. All rights reserved
  */
 
-package com.uca.nucas.gui.canvas;
+package com.uca.nucas.gui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,6 +18,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class CanvasController {
+
+    private Model model = null;
 
     @FXML
     ScrollPane canvasPane;
@@ -37,6 +39,18 @@ public class CanvasController {
         }
     }
 
+    public void drawLinePixelSize(int height, Color[] content, int pixelSize) {
+        PixelWriter pw = ctx.getPixelWriter();
+
+        for (int i = 0; i < content.length; i++) {
+            for (int j = 0; j < pixelSize; j++) {
+                for (int k = 0; k < pixelSize; k++) {
+                    pw.setColor(pixelSize * i + j, height + k, content[i]);
+                }
+            }
+        }
+    }
+
     public void clearCanvas() {
         ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
@@ -47,5 +61,9 @@ public class CanvasController {
 
     public void setCanvasHeight(double height) {
         canvas.setHeight(height);
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
     }
 }
