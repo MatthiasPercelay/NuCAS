@@ -18,6 +18,9 @@ import javafx.scene.paint.Color;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the canvas and its containing pane
+ */
 public class CanvasController {
 
     private Model model = null;
@@ -28,17 +31,16 @@ public class CanvasController {
     @FXML
     Canvas canvas;
 
-    public GraphicsContext ctx = null;
+    GraphicsContext ctx = null;
+
     private int currentDrawHeight = 0;
 
-    public void drawLine(int lineHeight, Color[] content) {
-        PixelWriter pw = ctx.getPixelWriter();
-
-        for (int i = 0; i < content.length; i++) {
-            pw.setColor(i, lineHeight, content[i]);
-        }
-    }
-
+    /**
+     * draws a line of pixelSize-sized squares at the given height based on the color data in content
+     * @param height the height in real pixels at which to start drawing
+     * @param content array of colors describing the "pixels" to draw
+     * @param pixelSize size of the "pixels"
+     */
     public void drawLinePixelSize(int height, Color[] content, int pixelSize) {
         PixelWriter pw = ctx.getPixelWriter();
 
@@ -51,6 +53,9 @@ public class CanvasController {
         }
     }
 
+    /**
+     * clears the canvas
+     */
     public void clearCanvas() {
         ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
@@ -65,9 +70,5 @@ public class CanvasController {
 
     public void setModel(Model model) {
         this.model = model;
-    }
-
-    public void ping() {
-        System.out.println("canvas controller pinged");
     }
 }
