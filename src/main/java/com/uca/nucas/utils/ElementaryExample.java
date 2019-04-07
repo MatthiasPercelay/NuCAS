@@ -6,8 +6,9 @@
 
 package com.uca.nucas.utils;
 
-import com.uca.nucas.engine.Alphabet;
+import com.uca.nucas.engine.alphabet.Alphabet;
 import com.uca.nucas.engine.Automaton;
+import com.uca.nucas.engine.alphabet.BinaryAlphabet;
 import com.uca.nucas.engine.configuration.Configuration;
 import com.uca.nucas.engine.configuration.GrowingConfiguration;
 import com.uca.nucas.engine.configuration.LossyConfiguration;
@@ -79,9 +80,7 @@ public class ElementaryExample {
         ElementaryRule rule = new ElementaryRule(code);
         UniformDistribution dist = new UniformDistribution(rule);
 
-        Alphabet alphabet = new Alphabet(new int[] {0, 1, -1});
-        alphabet.setColor(1, Color.BLACK);
-        alphabet.setColor(-1, Color.DARKGRAY);
+        Alphabet alphabet = new BinaryAlphabet();
 
         Automaton automaton = new Automaton(alphabet, dist, 1);
 

@@ -6,9 +6,9 @@
 
 package com.uca.nucas.engine;
 
+import com.uca.nucas.engine.alphabet.Alphabet;
 import com.uca.nucas.engine.configuration.Configuration;
 import com.uca.nucas.engine.distribution.Distribution;
-import com.uca.nucas.engine.ruleset.RuleSet;
 
 public class Automaton {
     Alphabet alphabet;

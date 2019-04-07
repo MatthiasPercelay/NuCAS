@@ -9,8 +9,9 @@ package com.uca.nucas.gui;
 /**
  * Main controller class for the gui
  */
-import com.uca.nucas.engine.Alphabet;
+import com.uca.nucas.engine.alphabet.Alphabet;
 import com.uca.nucas.engine.Automaton;
+import com.uca.nucas.engine.alphabet.BinaryAlphabet;
 import com.uca.nucas.engine.configuration.Configuration;
 import com.uca.nucas.engine.configuration.WrappingConfiguration;
 import com.uca.nucas.engine.distribution.Distribution;
@@ -32,8 +33,6 @@ public class MainWindow {
 
     @FXML
     public ChoiceBox<String> pixelSizeBox;
-
-    private int pixelSize = 4;
 
     @FXML
     public Button generateButton;
@@ -87,8 +86,7 @@ public class MainWindow {
         int code = Integer.parseInt(codeField.getText());
         ElementaryRule rule = new ElementaryRule(code);
         Distribution dist = new UniformDistribution(rule);
-        Alphabet alphabet = new Alphabet(new int[] {0, 1});
-        alphabet.setColor(1, Color.BLACK);
+        Alphabet alphabet = new BinaryAlphabet();
         Automaton automaton = new Automaton(alphabet, dist, 1);
 
         model.setAutomaton(automaton);
