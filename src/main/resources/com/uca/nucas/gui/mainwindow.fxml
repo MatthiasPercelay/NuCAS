@@ -19,7 +19,7 @@
   -->
 
 <?import java.lang.String?>
-<BorderPane fx:id="hostWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.MainWindow">
+<BorderPane fx:id="hostWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.MainWindowController">
    <bottom>
       <AnchorPane fx:id="bottom" BorderPane.alignment="CENTER" />
    </bottom>

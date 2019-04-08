@@ -21,6 +21,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -29,7 +30,7 @@ import javafx.scene.paint.Color;
 import java.util.Random;
 
 
-public class MainWindow {
+public class MainWindowController {
 
     @FXML
     public ChoiceBox<String> pixelSizeBox;
@@ -52,7 +53,7 @@ public class MainWindow {
     Model model = null;
 
     @FXML
-    public AnchorPane canvasPane;
+    public ScrollPane canvasPane;
 
     @FXML
     public CanvasController canvasPaneController;
@@ -72,13 +73,12 @@ public class MainWindow {
     public void initialize() {
         model = Model.getModelInstance();
         canvasPaneController.setModel(model);
-        canvasPaneController.ctx = canvasPaneController.canvas.getGraphicsContext2D();
 
         pixelSizeBox.getSelectionModel()
                 .selectedItemProperty()
                 .addListener( (ObservableValue<? extends String> observable, String oldValue, String newValue) ->
                 {
-                    pixelSize = Integer.parseInt(newValue);
+                    canvasPaneController.setPixelSize(Integer.parseInt(newValue));
                 });
     }
 
@@ -109,20 +109,16 @@ public class MainWindow {
         buildConfiguration();
         model.setMaxSteps(Integer.parseInt(stepsField.getText()));
         model.clearSTDiagram();
-        canvasPaneController.setCanvasHeight(pixelSize * Integer.parseInt(stepsField.getText()));
-        canvasPaneController.setCanvasWidth(pixelSize * Integer.parseInt(widthField.getText()));
+        canvasPaneController.setCanvasHeight(canvasPaneController.getPixelSize() * Integer.parseInt(stepsField.getText()));
+        canvasPaneController.setCanvasWidth(canvasPaneController.getPixelSize() * Integer.parseInt(widthField.getText()));
         canvasPaneController.clearCanvas();
     }
 
     public void runButtonFired() {
         model.runAutomaton();
         System.out.println("Automaton run");
-        drawAutomaton();
+        canvasPaneController.drawAutomaton();
     }
 
-    public void drawAutomaton() {
-        for (int i = 0; i < model.getMaxSteps(); i++) {
-            canvasPaneController.drawLinePixelSize(i * pixelSize, model.getColors(i), pixelSize);
-        }
-    }
+
 }

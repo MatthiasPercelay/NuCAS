@@ -13,10 +13,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.ServiceConfigurationError;
 
 /**
  * Controller for the canvas and its containing pane
@@ -26,14 +28,25 @@ public class CanvasController {
     private Model model = null;
 
     @FXML
-    AnchorPane canvasPane;
+    ScrollPane canvasPane;
 
     @FXML
     Canvas canvas;
 
     GraphicsContext ctx = null;
 
+    private int pixelSize = 4;
+
     private int currentDrawHeight = 0;
+
+    public void initialize() {
+        ctx = canvas.getGraphicsContext2D();
+
+        //canvasPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> updateScrolling(canvasPane));
+        //canvasPane.hvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling(canvasPane));
+        //canvasPane.vvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling(canvasPane));
+
+    }
 
     /**
      * draws a line of pixelSize-sized squares at the given height based on the color data in content
@@ -53,6 +66,8 @@ public class CanvasController {
         }
     }
 
+    private void updateScrolling(ScrollPane scrollPane){}
+
     /**
      * clears the canvas
      */
@@ -70,5 +85,19 @@ public class CanvasController {
 
     public void setModel(Model model) {
         this.model = model;
+    }
+
+    public int getPixelSize() {
+        return pixelSize;
+    }
+
+    public void setPixelSize(int newSize) {
+        pixelSize = newSize;
+    }
+
+    public void drawAutomaton() {
+        for (int i = 0; i < model.getMaxSteps(); i++) {
+            drawLinePixelSize(i * pixelSize, model.getColors(i), pixelSize);
+        }
     }
 }

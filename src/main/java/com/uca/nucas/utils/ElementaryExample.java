@@ -14,9 +14,7 @@ import com.uca.nucas.engine.configuration.GrowingConfiguration;
 import com.uca.nucas.engine.configuration.LossyConfiguration;
 import com.uca.nucas.engine.configuration.WrappingConfiguration;
 import com.uca.nucas.engine.distribution.UniformDistribution;
-import com.uca.nucas.engine.ruleset.SimpleRuleSet;
 import com.uca.nucas.engine.ruleset.localrule.ElementaryRule;
-import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;

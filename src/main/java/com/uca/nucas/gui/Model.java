@@ -98,4 +98,14 @@ public class Model {
         }
         return res;
     }
+
+    public int[][] getSTDiagramView(int startIndex, int endIndex, int startStep, int endStep) {
+        int[][] res = new int[endStep - startStep][endIndex - startIndex];
+        for (int i = startStep; i < endStep; i++) {
+            for (int j = startIndex; j < endIndex; j++) {
+                res[i][j] = spaceTimeDiagram.get(i).getCell(j);
+            }
+        }
+        return res;
+    }
 }

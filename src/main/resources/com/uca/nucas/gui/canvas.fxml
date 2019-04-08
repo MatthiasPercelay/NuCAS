@@ -2,7 +2,6 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
 
 <!--
   ~ Developed by Matthias Percelay. Created on 27/03/19 23:00.
@@ -10,12 +9,9 @@
   ~ Copyright (c) 2019. All rights reserved
   -->
 
-<AnchorPane fx:id="canvasPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.CanvasController">
-   <children>
-      <ScrollPane AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <content>
-            <Canvas fx:id="canvas" height="200.0" width="200.0" />
-         </content>
-      </ScrollPane>
-   </children>
-</AnchorPane>
+
+<ScrollPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.CanvasController">
+   <content>
+      <Canvas fx:id="canvas" height="200.0" width="200.0" />
+   </content>
+</ScrollPane>
