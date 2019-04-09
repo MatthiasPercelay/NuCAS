@@ -32,4 +32,8 @@ public class Automaton {
     public int getRadius() {
         return radius;
     }
+
+    public Alphabet getAlphabet() {
+        return alphabet;
+    }
 }

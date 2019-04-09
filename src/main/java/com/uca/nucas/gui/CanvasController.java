@@ -7,18 +7,12 @@
 package com.uca.nucas.gui;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.PixelWriter;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.ServiceConfigurationError;
 
 /**
  * Controller for the canvas and its containing pane
@@ -30,7 +24,7 @@ public class CanvasController {
     ScrollPane canvasPane;
 
     @FXML
-    Pane pane;
+    Pane sizePane;
 
     @FXML
     Canvas canvas;
@@ -44,9 +38,9 @@ public class CanvasController {
     public void initialize() {
         ctx = canvas.getGraphicsContext2D();
 
-        canvasPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> updateScrolling(canvasPane));
-        canvasPane.hvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling(canvasPane));
-        canvasPane.vvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling(canvasPane));
+        canvasPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> updateScrolling());
+        canvasPane.hvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling());
+        canvasPane.vvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling());
 
     }
 
@@ -68,13 +62,50 @@ public class CanvasController {
         }
     }
 
-    private void updateScrolling(ScrollPane scrollPane){
-        double hValue = scrollPane.getHvalue();
-        double vValue = scrollPane.getVvalue();
-        double portWidth = scrollPane.getViewportBounds().getWidth();
-        double portHeight = scrollPane.getViewportBounds().getHeight();
+    void drawSegment(int drawHeight, int step, int xStart, int xEnd, int pixelSize) {
+        int[] data = model.getSTDiagramSegment(xStart, xEnd, step);
+
+        PixelWriter pw = ctx.getPixelWriter();
+
+        for (int i = xStart; i < xEnd; i++) {
+            for (int j = 0; j < pixelSize; j++) {
+                for (int k = 0; k < pixelSize; k++) {
+                    pw.setColor(pixelSize * (i - xStart) + j, drawHeight + k, model.getStateColor(data[i]));
+                }
+            }
+        }
+    }
+
+    void fillViewport(int startStep, int endStep, int leftBound, int rightBound) {
+        for (int i = startStep; i < endStep; i++) {
+            drawSegment(i * pixelSize, i, leftBound, rightBound, pixelSize);
+        }
+    }
+
+    private void updateScrolling(){
+        double hValue = canvasPane.getHvalue();
+        double vValue = canvasPane.getVvalue();
+
+        double portWidth = canvasPane.getViewportBounds().getWidth();
+        canvas.setWidth(portWidth);
+        double portHeight = canvasPane.getViewportBounds().getHeight();
+        canvas.setHeight(portHeight);
+
+        int topStep = (int)Math.floor(vValue * sizePane.getHeight() / pixelSize);
+        int bottomStep = topStep + (int)Math.floor(portHeight / pixelSize);
+
+        int leftCell = (int)Math.floor(hValue * sizePane.getWidth() / pixelSize);
+        int rightCell = leftCell + (int)Math.floor(portWidth / pixelSize);
+
+
         System.out.println("listening");
     }
+
+    void setSizePaneDims(int width, int height, int pixelSize) {
+        sizePane.setMinSize(width * pixelSize, height * pixelSize);
+        sizePane.setMaxSize(width * pixelSize, height * pixelSize);
+    }
+
 
     /**
      * clears the canvas

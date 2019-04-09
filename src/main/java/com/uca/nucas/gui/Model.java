@@ -65,6 +65,10 @@ public class Model {
         this.automaton = automaton;
     }
 
+    public Color getStateColor(int state) {
+        return automaton.getAlphabet().getColor(state);
+    }
+
     /**
      * clears the space-time diagram
      */
@@ -105,6 +109,14 @@ public class Model {
             for (int j = startIndex; j < endIndex; j++) {
                 res[i][j] = spaceTimeDiagram.get(i).getCell(j);
             }
+        }
+        return res;
+    }
+
+    public int[] getSTDiagramSegment(int startIndex, int endIndex, int step) {
+        int[] res = new int[endIndex - startIndex];
+        for (int i = startIndex; i < endIndex; i++) {
+            res[i] = spaceTimeDiagram.get(step).getCell(i);
         }
         return res;
     }
