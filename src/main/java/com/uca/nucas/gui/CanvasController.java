@@ -24,11 +24,13 @@ import java.util.ServiceConfigurationError;
  * Controller for the canvas and its containing pane
  */
 public class CanvasController {
-
     private Model model = null;
 
     @FXML
     ScrollPane canvasPane;
+
+    @FXML
+    Pane pane;
 
     @FXML
     Canvas canvas;
@@ -42,9 +44,9 @@ public class CanvasController {
     public void initialize() {
         ctx = canvas.getGraphicsContext2D();
 
-        //canvasPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> updateScrolling(canvasPane));
-        //canvasPane.hvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling(canvasPane));
-        //canvasPane.vvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling(canvasPane));
+        canvasPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> updateScrolling(canvasPane));
+        canvasPane.hvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling(canvasPane));
+        canvasPane.vvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling(canvasPane));
 
     }
 
@@ -66,7 +68,13 @@ public class CanvasController {
         }
     }
 
-    private void updateScrolling(ScrollPane scrollPane){}
+    private void updateScrolling(ScrollPane scrollPane){
+        double hValue = scrollPane.getHvalue();
+        double vValue = scrollPane.getVvalue();
+        double portWidth = scrollPane.getViewportBounds().getWidth();
+        double portHeight = scrollPane.getViewportBounds().getHeight();
+        System.out.println("listening");
+    }
 
     /**
      * clears the canvas
