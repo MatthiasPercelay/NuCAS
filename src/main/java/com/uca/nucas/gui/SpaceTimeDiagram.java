@@ -55,7 +55,7 @@ public class SpaceTimeDiagram {
         int[] res = new int[size];
 
         for (int i = 0; i < res.length; i++) {
-            res[i] = configuration.getCell(i);
+            res[i] = configuration.getCell(i + startPoint);
         }
 
         return res;
