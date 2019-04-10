@@ -50,6 +50,14 @@ public interface Configuration {
     public int getInitialSize();
 
     /**
+     * returns the greater of the current size or the starting size, used for display purposes
+     * @return
+     */
+    public default int getGreatestSize() {
+        return Math.max(getSize(), getInitialSize());
+    }
+
+    /**
      * return the index to start iterating at for evaluation purposes
      * @return
      */

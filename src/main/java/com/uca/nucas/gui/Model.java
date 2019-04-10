@@ -23,11 +23,6 @@ public class Model {
     private ArrayList<Configuration> spaceTimeDiagram = new ArrayList<>();
 
     /**
-     * starting configuration for the simulation
-     */
-    private Configuration startingConfiguration;
-
-    /**
      * the automaton to use
      */
     private Automaton automaton;
@@ -54,7 +49,7 @@ public class Model {
      * runs the automaton to the limit of maxSteps
      */
     public void runAutomaton() {
-        Configuration conf = startingConfiguration;
+        Configuration conf = spaceTimeDiagram.get(0);
         for (int i = 0; i < maxSteps; i++) {
             conf = automaton.evaluate(conf);
             spaceTimeDiagram.add(conf);
@@ -69,15 +64,26 @@ public class Model {
         return automaton.getAlphabet().getColor(state);
     }
 
+    public int getConfigurationStartingSize() {
+        if (spaceTimeDiagram.size() == 0) return 0;
+        return spaceTimeDiagram.get(0).getInitialSize();
+    }
+
     /**
-     * clears the space-time diagram
+     * clears the space-time diagram except for the starting configuration
      */
     public void clearSTDiagram() {
+        Configuration startingConfiguration = spaceTimeDiagram.get(0);
         spaceTimeDiagram = new ArrayList<>();
+        spaceTimeDiagram.add(startingConfiguration);
     }
 
     public void setStartingConfiguration(Configuration startingConfiguration) {
-        this.startingConfiguration = startingConfiguration;
+        if (spaceTimeDiagram.size() == 0) {
+            spaceTimeDiagram.add(startingConfiguration);
+        } else {
+            spaceTimeDiagram.set(0, startingConfiguration);
+        }
     }
 
     public int getMaxSteps() {
@@ -86,6 +92,10 @@ public class Model {
 
     public void setMaxSteps(int maxSteps) {
         this.maxSteps = maxSteps;
+    }
+
+    public int getCurrentSteps() {
+        return spaceTimeDiagram.size();
     }
 
     /**
@@ -114,9 +124,12 @@ public class Model {
     }
 
     public int[] getSTDiagramSegment(int startIndex, int endIndex, int step) {
+        Configuration configuration = spaceTimeDiagram.get(step);
+        startIndex = Math.min(startIndex, configuration.getGreatestSize());
+        endIndex = Math.min(endIndex, configuration.getGreatestSize());
         int[] res = new int[endIndex - startIndex];
         for (int i = startIndex; i < endIndex; i++) {
-            res[i] = spaceTimeDiagram.get(step).getCell(i);
+            res[i] = configuration.getCell(i);
         }
         return res;
     }

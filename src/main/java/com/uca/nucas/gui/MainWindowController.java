@@ -79,6 +79,10 @@ public class MainWindowController {
                 .addListener( (ObservableValue<? extends String> observable, String oldValue, String newValue) ->
                 {
                     canvasPaneController.setPixelSize(Integer.parseInt(newValue));
+                    canvasPaneController.clearCanvas();
+                    int width = model.getConfigurationStartingSize();
+                    int height = model.getMaxSteps();
+                    canvasPaneController.setSizePaneDims(width, height, canvasPaneController.getPixelSize());
                 });
     }
 
@@ -109,15 +113,19 @@ public class MainWindowController {
         buildConfiguration();
         model.setMaxSteps(Integer.parseInt(stepsField.getText()));
         model.clearSTDiagram();
-        canvasPaneController.setCanvasHeight(canvasPaneController.getPixelSize() * Integer.parseInt(stepsField.getText()));
-        canvasPaneController.setCanvasWidth(canvasPaneController.getPixelSize() * Integer.parseInt(widthField.getText()));
+        int width = model.getConfigurationStartingSize();
+        int height = model.getMaxSteps();
+        canvasPaneController.setSizePaneDims(width, height, canvasPaneController.getPixelSize());
         canvasPaneController.clearCanvas();
     }
 
     public void runButtonFired() {
+        model.clearSTDiagram();
         model.runAutomaton();
+        canvasPaneController.clearCanvas();
         System.out.println("Automaton run");
-        canvasPaneController.drawAutomaton();
+        //canvasPaneController.drawAutomaton();
+
     }
 
 

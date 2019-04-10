@@ -77,6 +77,9 @@ public class CanvasController {
     }
 
     void fillViewport(int startStep, int endStep, int leftBound, int rightBound) {
+        startStep = Math.max(0, startStep);
+        endStep = Math.min(endStep, model.getCurrentSteps());
+
         for (int i = startStep; i < endStep; i++) {
             drawSegment(i * pixelSize, i, leftBound, rightBound, pixelSize);
         }
@@ -97,8 +100,14 @@ public class CanvasController {
         int leftCell = (int)Math.floor(hValue * sizePane.getWidth() / pixelSize);
         int rightCell = leftCell + (int)Math.floor(portWidth / pixelSize);
 
+        double canvasX = (canvasPane.getContent().getBoundsInParent().getWidth() - portWidth) * hValue;
+        double canvasY = (canvasPane.getContent().getBoundsInParent().getHeight() - portHeight) * vValue;
 
-        System.out.println("listening");
+        canvas.relocate(canvasX, canvasY);
+
+        if (model.getCurrentSteps() > 0) {
+            fillViewport(topStep, bottomStep, leftCell, rightCell);
+        }
     }
 
     void setSizePaneDims(int width, int height, int pixelSize) {
