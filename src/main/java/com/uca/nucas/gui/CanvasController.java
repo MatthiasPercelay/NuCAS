@@ -7,6 +7,7 @@
 package com.uca.nucas.gui;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
@@ -77,33 +78,38 @@ public class CanvasController {
     }
 
     void paintWholeCanvas(int horizontalOffset, int verticalOffset) {
+        clearCanvas();
         int stepsToPaint = (int)Math.floor(canvas.getHeight() / pixelSize);
         stepsToPaint = Math.min(stepsToPaint, model.getSpaceTimeDiagram().getConfCount() - verticalOffset);
         int cellsToDraw = (int)Math.floor(canvas.getWidth() / pixelSize);
         cellsToDraw = Math.min(cellsToDraw, model.getSpaceTimeDiagram().getMaxConfSize());
 
-        for (int i = verticalOffset; i < verticalOffset + stepsToPaint ; i++) {
-            drawSegment(i * pixelSize, i, horizontalOffset, horizontalOffset + cellsToDraw, pixelSize);
+        for (int i = 0; i < stepsToPaint; i++) {
+            drawSegment(i * pixelSize, verticalOffset + i, horizontalOffset, horizontalOffset + cellsToDraw, pixelSize);
         }
     }
 
     public void updateScrolling(){
         double hValue = canvasPane.getHvalue();
         double vValue = canvasPane.getVvalue();
-        System.out.println(hValue + ", " + vValue);
+        //System.out.println(hValue + ", " + vValue);
 
-        double portWidth = canvasPane.getViewportBounds().getWidth();
+        Bounds bounds = canvasPane.getViewportBounds();
+        double portWidth = bounds.getWidth();
         canvas.setWidth(portWidth);
-        double portHeight = canvasPane.getViewportBounds().getHeight();
+        double portHeight = bounds.getHeight();
         canvas.setHeight(portHeight);
 
         double canvasX = (canvasPane.getContent().getBoundsInParent().getWidth() - portWidth) * hValue;
+
         double canvasY = (canvasPane.getContent().getBoundsInParent().getHeight() - portHeight) * vValue;
 
         canvas.relocate(canvasX, canvasY);
+        canvasPane.setMaxWidth(portWidth);
 
-        int horizontalOffset = (int)Math.floor(sizePane.getWidth() / pixelSize * hValue);
-        int verticalOffset = (int)Math.floor(sizePane.getHeight() / pixelSize * vValue);
+        int horizontalOffset = (int)Math.floor((sizePane.getWidth() - canvasPane.getWidth()) / pixelSize * hValue);
+        int verticalOffset = (int)Math.floor((sizePane.getHeight() - canvasPane.getHeight()) / pixelSize * vValue);
+        System.out.println(horizontalOffset + ", " + verticalOffset);
 
         if (model.hasRun()) {
             paintWholeCanvas(horizontalOffset, verticalOffset);
@@ -121,14 +127,6 @@ public class CanvasController {
      */
     public void clearCanvas() {
         ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-    }
-
-    public void setCanvasWidth(double width) {
-        canvas.setWidth(width);
-    }
-
-    public void setCanvasHeight(double height) {
-        canvas.setHeight(height);
     }
 
     public void setModel(Model model) {
