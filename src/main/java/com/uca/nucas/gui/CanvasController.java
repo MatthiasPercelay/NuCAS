@@ -63,50 +63,50 @@ public class CanvasController {
     }
 
     void drawSegment(int drawHeight, int step, int xStart, int xEnd, int pixelSize) {
-        int[] data = model.getSTDiagramSegment(xStart, xEnd, step);
+        int[] data = model.getSpaceTimeDiagram().getSegment(xStart, xEnd, step);
 
         PixelWriter pw = ctx.getPixelWriter();
 
-        for (int i = xStart; i < xEnd; i++) {
+        for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < pixelSize; j++) {
                 for (int k = 0; k < pixelSize; k++) {
-                    pw.setColor(pixelSize * (i - xStart) + j, drawHeight + k, model.getStateColor(data[i]));
+                    pw.setColor(pixelSize * i + j, drawHeight + k, model.getStateColor(data[i]));
                 }
             }
         }
     }
 
-    void fillViewport(int startStep, int endStep, int leftBound, int rightBound) {
-        startStep = Math.max(0, startStep);
-        endStep = Math.min(endStep, model.getCurrentSteps());
+    void paintWholeCanvas(int horizontalOffset, int verticalOffset) {
+        int stepsToPaint = (int)Math.floor(canvas.getHeight() / pixelSize);
+        stepsToPaint = Math.min(stepsToPaint, model.getSpaceTimeDiagram().getConfCount() - verticalOffset);
+        int cellsToDraw = (int)Math.floor(canvas.getWidth() / pixelSize);
+        cellsToDraw = Math.min(cellsToDraw, model.getSpaceTimeDiagram().getMaxConfSize());
 
-        for (int i = startStep; i < endStep; i++) {
-            drawSegment(i * pixelSize, i, leftBound, rightBound, pixelSize);
+        for (int i = verticalOffset; i < verticalOffset + stepsToPaint ; i++) {
+            drawSegment(i * pixelSize, i, horizontalOffset, horizontalOffset + cellsToDraw, pixelSize);
         }
     }
 
-    private void updateScrolling(){
+    public void updateScrolling(){
         double hValue = canvasPane.getHvalue();
         double vValue = canvasPane.getVvalue();
+        System.out.println(hValue + ", " + vValue);
 
         double portWidth = canvasPane.getViewportBounds().getWidth();
         canvas.setWidth(portWidth);
         double portHeight = canvasPane.getViewportBounds().getHeight();
         canvas.setHeight(portHeight);
 
-        int topStep = (int)Math.floor(vValue * sizePane.getHeight() / pixelSize);
-        int bottomStep = topStep + (int)Math.floor(portHeight / pixelSize);
-
-        int leftCell = (int)Math.floor(hValue * sizePane.getWidth() / pixelSize);
-        int rightCell = leftCell + (int)Math.floor(portWidth / pixelSize);
-
         double canvasX = (canvasPane.getContent().getBoundsInParent().getWidth() - portWidth) * hValue;
         double canvasY = (canvasPane.getContent().getBoundsInParent().getHeight() - portHeight) * vValue;
 
         canvas.relocate(canvasX, canvasY);
 
-        if (model.getCurrentSteps() > 0) {
-            fillViewport(topStep, bottomStep, leftCell, rightCell);
+        int horizontalOffset = (int)Math.floor(sizePane.getWidth() / pixelSize * hValue);
+        int verticalOffset = (int)Math.floor(sizePane.getHeight() / pixelSize * vValue);
+
+        if (model.hasRun()) {
+            paintWholeCanvas(horizontalOffset, verticalOffset);
         }
     }
 

@@ -80,7 +80,7 @@ public class MainWindowController {
                 {
                     canvasPaneController.setPixelSize(Integer.parseInt(newValue));
                     canvasPaneController.clearCanvas();
-                    int width = model.getConfigurationStartingSize();
+                    int width = model.getSpaceTimeDiagram().getMaxConfSize();
                     int height = model.getMaxSteps();
                     canvasPaneController.setSizePaneDims(width, height, canvasPaneController.getPixelSize());
                 });
@@ -104,7 +104,7 @@ public class MainWindowController {
             contents[i] = rand.nextInt(2);
         }
         Configuration conf = new WrappingConfiguration(contents);
-        model.setStartingConfiguration(conf);
+        model.getSpaceTimeDiagram().setStartingConfiguration(conf);
         System.out.println("Configuration added to model");
     }
 
@@ -112,17 +112,18 @@ public class MainWindowController {
         buildAutomaton();
         buildConfiguration();
         model.setMaxSteps(Integer.parseInt(stepsField.getText()));
-        model.clearSTDiagram();
-        int width = model.getConfigurationStartingSize();
+        model.resetToStart();
+        int width = model.getSpaceTimeDiagram().getMaxConfSize();
         int height = model.getMaxSteps();
         canvasPaneController.setSizePaneDims(width, height, canvasPaneController.getPixelSize());
         canvasPaneController.clearCanvas();
     }
 
     public void runButtonFired() {
-        model.clearSTDiagram();
+        model.resetToStart();
         model.runAutomaton();
         canvasPaneController.clearCanvas();
+        canvasPaneController.updateScrolling();
         System.out.println("Automaton run");
         //canvasPaneController.drawAutomaton();
 
