@@ -4,6 +4,7 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -80,6 +81,7 @@
                   <TextField fx:id="codeField" prefWidth="80.0" promptText="code" text="110" />
                   <Separator orientation="VERTICAL" prefHeight="30.0" />
                   <Button fx:id="pertubationButton" mnemonicParsing="false" onAction="#perturbationButtonFired" text="perturbation model" />
+                  <ComboBox fx:id="stateSelectBox" prefHeight="26.0" prefWidth="80.0" promptText="state" />
               </items>
             </ToolBar>
          </children>

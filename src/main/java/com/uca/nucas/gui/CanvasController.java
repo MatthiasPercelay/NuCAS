@@ -13,6 +13,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.PixelWriter;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -53,7 +54,15 @@ public class CanvasController {
                 System.out.println(clickX + ", " + clickY);
             }
         };
-        sizePane.addEventFilter(MouseEvent.MOUSE_CLICKED, clickHandler);
+        //sizePane.addEventFilter(MouseEvent.MOUSE_CLICKED, clickHandler);
+
+        sizePane.addEventHandler(MouseEvent.ANY, mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.MIDDLE) {
+                int clickX = (int)Math.floor(mouseEvent.getX() / pixelSize);
+                int clickY = (int)Math.floor(mouseEvent.getY() / pixelSize);
+                model.getSpaceTimeDiagram().editStartingConfiguration(clickX, model.getCurrentEditingState());
+            }
+        });
     }
 
     /**

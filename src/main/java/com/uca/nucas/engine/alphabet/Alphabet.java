@@ -9,6 +9,8 @@ package com.uca.nucas.engine.alphabet;
 
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+
 /**
  * represents an alphabet over which automata are defined
  * complete WIP, expect breaking changes
@@ -42,5 +44,19 @@ public class Alphabet {
 
     public void setLostColor(Color lostColor) {
         this.lostColor = lostColor;
+    }
+
+    /**
+     * returns the list of state names
+     * current impl supports only state numbers, but more alphabet properties should be added later
+     * to support naming states
+     * @return
+     */
+    public ArrayList<String> getStateNames() {
+        ArrayList<String> res = new ArrayList<>();
+        for (int i = 0; i < size + 1; i++) {
+            res.add("" + (i - 1));
+        }
+        return res;
     }
 }

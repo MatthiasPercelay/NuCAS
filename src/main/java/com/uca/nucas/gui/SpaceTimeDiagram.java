@@ -44,6 +44,12 @@ public class SpaceTimeDiagram {
         }
     }
 
+    public void editStartingConfiguration(int index, int state) {
+        if(data.size() != 0) {
+            data.get(0).setCell(index, state);
+        }
+    }
+
     public int[] getSegment(int startPoint, int endPoint, int step) {
         Configuration configuration = data.get(step);
         startPoint = Math.max(0, startPoint);

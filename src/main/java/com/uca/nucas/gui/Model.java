@@ -32,7 +32,12 @@ public class Model {
      */
     private int maxSteps = 0;
 
+    /**
+     * indicates whether or not the current automaton has started its simulation
+     */
     private boolean hasRun = false;
+
+    private int currentEditingState = 0;
 
     private Model(){}
 
@@ -65,8 +70,20 @@ public class Model {
         this.automaton = automaton;
     }
 
+    public Automaton getAutomaton() {
+        return automaton;
+    }
+
     public SpaceTimeDiagram getSpaceTimeDiagram() {
         return spaceTimeDiagram;
+    }
+
+    public int getCurrentEditingState() {
+        return currentEditingState;
+    }
+
+    public void setCurrentEditingState(int currentEditingState) {
+        this.currentEditingState = currentEditingState;
     }
 
     public void resetToStart() {

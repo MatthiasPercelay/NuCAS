@@ -25,12 +25,12 @@ import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 import com.uca.nucas.engine.ruleset.localrule.perturbationexample.LeftGenRule;
 import com.uca.nucas.engine.ruleset.localrule.perturbationexample.MainRule;
 import com.uca.nucas.engine.ruleset.localrule.perturbationexample.RightGenRule;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -60,6 +60,9 @@ public class MainWindowController {
 
     @FXML
     public Button runButton;
+
+    @FXML
+    public ComboBox<String> stateSelectBox;
 
     Model model = null;
 
@@ -95,6 +98,17 @@ public class MainWindowController {
                     int height = model.getMaxSteps();
                     canvasPaneController.setSizePaneDims(width, height, canvasPaneController.getPixelSize());
                 });
+
+        stateSelectBox.getSelectionModel()
+                .selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                                 @Override
+                                 public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                                     model.setCurrentEditingState((int)t1 - 1);
+                                 System.out.println(model.getCurrentEditingState());
+                                 }
+                             }
+                );
     }
 
     void buildAutomaton() {
@@ -120,6 +134,8 @@ public class MainWindowController {
     }
 
     void setupModelAndCanvas() {
+        stateSelectBox.setItems(FXCollections.observableList(model.getAutomaton().getAlphabet().getStateNames()));
+
         model.setMaxSteps(Integer.parseInt(stepsField.getText()));
         model.resetToStart();
         int width = model.getSpaceTimeDiagram().getMaxConfSize();
@@ -147,8 +163,8 @@ public class MainWindowController {
         for (int i = 0; i < distData.length; i++) {
             distData[i] = new MainRule();
         }
-        distData[98] = new LeftGenRule();
-        distData[100] = new RightGenRule();
+        distData[distData.length / 2 - 2] = new LeftGenRule();
+        distData[distData.length / 2] = new RightGenRule();
         Distribution dist = new DefaultBoundDistribution(distData, new MainRule());
         Alphabet alphabet = new TernaryAlphabet();
         Automaton automaton = new Automaton(alphabet, dist, 1);
