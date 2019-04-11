@@ -42,7 +42,6 @@ public class CanvasController {
         canvasPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> updateScrolling());
         canvasPane.hvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling());
         canvasPane.vvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling());
-
     }
 
     /**
@@ -92,7 +91,6 @@ public class CanvasController {
     public void updateScrolling(){
         double hValue = canvasPane.getHvalue();
         double vValue = canvasPane.getVvalue();
-        //System.out.println(hValue + ", " + vValue);
 
         Bounds bounds = canvasPane.getViewportBounds();
         double portWidth = bounds.getWidth();
@@ -139,11 +137,5 @@ public class CanvasController {
 
     public void setPixelSize(int newSize) {
         pixelSize = newSize;
-    }
-
-    public void drawAutomaton() {
-        for (int i = 0; i < model.getMaxSteps(); i++) {
-            drawLinePixelSize(i * pixelSize, model.getColors(i), pixelSize);
-        }
     }
 }

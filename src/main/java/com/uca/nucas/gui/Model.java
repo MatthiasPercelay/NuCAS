@@ -4,8 +4,6 @@ import com.uca.nucas.engine.Automaton;
 import com.uca.nucas.engine.configuration.Configuration;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
-
 /**
  * Singleton in charge of managing the model of the simulation
  * TODO : make it async because it currently blocks the UI thread
@@ -91,20 +89,4 @@ public class Model {
     public int getCurrentSteps() {
         return spaceTimeDiagram.getConfCount();
     }
-
-    /**
-     * obtain an array of Color objects corresponding to the i-th configuration in the space-time diagram
-     * TODO : make it use the Alphabet properly instead of being limited to binary alphabets
-     * @param i
-     * @return
-     */
-    public Color[] getColors(int i) {
-        Color[] res = new Color[spaceTimeDiagram.get(0).getInitialSize()];
-        for (int j = 0; j < spaceTimeDiagram.get(0).getInitialSize(); j++) {
-            if (spaceTimeDiagram.get(i).getCell(j) == 1) res[j] = Color.BLACK;
-            else res[j] = Color.WHITE;
-        }
-        return res;
-    }
-
 }

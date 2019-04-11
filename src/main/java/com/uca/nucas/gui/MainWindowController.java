@@ -13,6 +13,8 @@ import com.uca.nucas.engine.alphabet.Alphabet;
 import com.uca.nucas.engine.Automaton;
 import com.uca.nucas.engine.alphabet.BinaryAlphabet;
 import com.uca.nucas.engine.configuration.Configuration;
+import com.uca.nucas.engine.configuration.GrowingConfiguration;
+import com.uca.nucas.engine.configuration.LossyConfiguration;
 import com.uca.nucas.engine.configuration.WrappingConfiguration;
 import com.uca.nucas.engine.distribution.Distribution;
 import com.uca.nucas.engine.distribution.UniformDistribution;
@@ -25,7 +27,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 
 import java.util.Random;
 
@@ -103,7 +104,9 @@ public class MainWindowController {
         for (int i = 0; i < contents.length; i++) {
             contents[i] = rand.nextInt(2);
         }
-        Configuration conf = new WrappingConfiguration(contents);
+        //Configuration conf = new WrappingConfiguration(contents);
+        Configuration conf = new GrowingConfiguration(contents, 0);
+        //Configuration conf = new LossyConfiguration(contents, -1);
         model.getSpaceTimeDiagram().setStartingConfiguration(conf);
         System.out.println("Configuration added to model");
     }
@@ -125,8 +128,6 @@ public class MainWindowController {
         canvasPaneController.clearCanvas();
         canvasPaneController.updateScrolling();
         System.out.println("Automaton run");
-        //canvasPaneController.drawAutomaton();
-
     }
 
 
