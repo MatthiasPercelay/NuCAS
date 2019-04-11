@@ -3,14 +3,14 @@ package com.uca.nucas.engine.ruleset.localrule.perturbationexample;
 import com.uca.nucas.engine.configuration.Configuration;
 import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 
-public class mainRule implements LocalRule {
+public class RightGenRule implements LocalRule {
     @Override
     public int evaluate(int position, Configuration conf) {
-        return 0;
+        return 1;
     }
 
     @Override
     public int getRadius() {
-        return 1;
+        return 0;
     }
 }

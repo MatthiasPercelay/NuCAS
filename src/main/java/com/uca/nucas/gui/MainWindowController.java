@@ -12,13 +12,19 @@ package com.uca.nucas.gui;
 import com.uca.nucas.engine.alphabet.Alphabet;
 import com.uca.nucas.engine.Automaton;
 import com.uca.nucas.engine.alphabet.BinaryAlphabet;
+import com.uca.nucas.engine.alphabet.TernaryAlphabet;
 import com.uca.nucas.engine.configuration.Configuration;
 import com.uca.nucas.engine.configuration.GrowingConfiguration;
 import com.uca.nucas.engine.configuration.LossyConfiguration;
 import com.uca.nucas.engine.configuration.WrappingConfiguration;
+import com.uca.nucas.engine.distribution.DefaultBoundDistribution;
 import com.uca.nucas.engine.distribution.Distribution;
 import com.uca.nucas.engine.distribution.UniformDistribution;
 import com.uca.nucas.engine.ruleset.localrule.ElementaryRule;
+import com.uca.nucas.engine.ruleset.localrule.LocalRule;
+import com.uca.nucas.engine.ruleset.localrule.perturbationexample.LeftGenRule;
+import com.uca.nucas.engine.ruleset.localrule.perturbationexample.MainRule;
+import com.uca.nucas.engine.ruleset.localrule.perturbationexample.RightGenRule;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,6 +33,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 
 import java.util.Random;
 
@@ -38,6 +45,9 @@ public class MainWindowController {
 
     @FXML
     public Button generateButton;
+
+    @FXML
+    public Button perturbationButton;
 
     @FXML
     public TextField codeField;
@@ -98,28 +108,30 @@ public class MainWindowController {
         System.out.println("Automaton added to model");
     }
 
-    void buildConfiguration() {
+    void buildConfiguration(int noStates) {
         int[] contents = new int[Integer.parseInt(widthField.getText())];
         Random rand = new Random();
         for (int i = 0; i < contents.length; i++) {
-            contents[i] = rand.nextInt(2);
+            contents[i] = rand.nextInt(noStates);
         }
-        //Configuration conf = new WrappingConfiguration(contents);
-        Configuration conf = new GrowingConfiguration(contents, 0);
-        //Configuration conf = new LossyConfiguration(contents, -1);
+        Configuration conf = new WrappingConfiguration(contents);
         model.getSpaceTimeDiagram().setStartingConfiguration(conf);
         System.out.println("Configuration added to model");
     }
 
-    public void generateButtonFired() {
-        buildAutomaton();
-        buildConfiguration();
+    void setupModelAndCanvas() {
         model.setMaxSteps(Integer.parseInt(stepsField.getText()));
         model.resetToStart();
         int width = model.getSpaceTimeDiagram().getMaxConfSize();
         int height = model.getMaxSteps();
         canvasPaneController.setSizePaneDims(width, height, canvasPaneController.getPixelSize());
         canvasPaneController.clearCanvas();
+    }
+
+    public void generateButtonFired() {
+        buildAutomaton();
+        buildConfiguration(2);
+        setupModelAndCanvas();
     }
 
     public void runButtonFired() {
@@ -130,5 +142,19 @@ public class MainWindowController {
         System.out.println("Automaton run");
     }
 
+    public void perturbationButtonFired() {
+        LocalRule[] distData = new LocalRule[Integer.parseInt(widthField.getText())];
+        for (int i = 0; i < distData.length; i++) {
+            distData[i] = new MainRule();
+        }
+        distData[98] = new LeftGenRule();
+        distData[100] = new RightGenRule();
+        Distribution dist = new DefaultBoundDistribution(distData, new MainRule());
+        Alphabet alphabet = new TernaryAlphabet();
+        Automaton automaton = new Automaton(alphabet, dist, 1);
+        model.setAutomaton(automaton);
 
+        buildConfiguration(3);
+        setupModelAndCanvas();
+    }
 }

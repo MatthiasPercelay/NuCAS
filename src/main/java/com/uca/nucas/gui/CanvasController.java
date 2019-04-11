@@ -6,12 +6,14 @@
 
 package com.uca.nucas.gui;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.PixelWriter;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -42,6 +44,16 @@ public class CanvasController {
         canvasPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> updateScrolling());
         canvasPane.hvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling());
         canvasPane.vvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling());
+
+        EventHandler<MouseEvent> clickHandler = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                int clickX = (int)Math.floor(mouseEvent.getX() / pixelSize);
+                int clickY = (int)Math.floor(mouseEvent.getY() / pixelSize);
+                System.out.println(clickX + ", " + clickY);
+            }
+        };
+        sizePane.addEventFilter(MouseEvent.MOUSE_CLICKED, clickHandler);
     }
 
     /**
@@ -107,7 +119,6 @@ public class CanvasController {
 
         int horizontalOffset = (int)Math.floor((sizePane.getWidth() - canvasPane.getWidth()) / pixelSize * hValue);
         int verticalOffset = (int)Math.floor((sizePane.getHeight() - canvasPane.getHeight()) / pixelSize * vValue);
-        System.out.println(horizontalOffset + ", " + verticalOffset);
 
         if (model.hasRun()) {
             paintWholeCanvas(horizontalOffset, verticalOffset);
