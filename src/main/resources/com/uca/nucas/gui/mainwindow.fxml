@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.collections.*?>
+
+<!--
+  ~ Developed by Matthias Percelay. Created on 14/03/19 10:29.
+  ~ Last modified 14/03/19 10:12
+  ~ Copyright (c) 2019. All rights reserved
+  -->
+
+<?import java.lang.String?>
+<BorderPane fx:id="hostWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.MainWindowController">
+   <bottom>
+      <AnchorPane fx:id="bottom" BorderPane.alignment="CENTER" />
+   </bottom>
+   <right>
+      <AnchorPane fx:id="right" prefHeight="334.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+   </right>
+   <center>
+       <AnchorPane fx:id="center" BorderPane.alignment="CENTER">
+           <fx:include fx:id="canvasPane" source="canvas.fxml" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+       </AnchorPane>
+   </center>
+   <left>
+      <AnchorPane fx:id="left" prefHeight="334.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+   </left>
+   <top>
+      <VBox prefHeight="65.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <ToolBar prefHeight="40.0" prefWidth="200.0">
+              <items>
+                <Button fx:id="generateButton" mnemonicParsing="false" onAction="#generateButtonFired" text="generate" />
+                  <TextField fx:id="codeField" promptText="code" text="110" />
+                  <TextField fx:id="stepsField" promptText="max steps" text="200" />
+                  <TextField fx:id="widthField" promptText="width" text="200" />
+                  <Button fx:id="runButton" mnemonicParsing="false" onAction="#runButtonFired" text="run" />
+                  <ChoiceBox fx:id="pixelSizeBox" value="4">
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="1" />
+                              <String fx:value="2" />
+                              <String fx:value="3" />
+                              <String fx:value="4" />
+                              <String fx:value="5" />
+                          </FXCollections>
+                      </items>
+                  </ChoiceBox>
+              </items>
+            </ToolBar>
+         </children>
+      </VBox>
+   </top>
+</BorderPane>
