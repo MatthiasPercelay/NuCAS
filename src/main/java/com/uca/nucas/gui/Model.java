@@ -2,6 +2,8 @@ package com.uca.nucas.gui;
 
 import com.uca.nucas.engine.Automaton;
 import com.uca.nucas.engine.configuration.Configuration;
+import com.uca.nucas.engine.distribution.Distribution;
+import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 import javafx.scene.paint.Color;
 
 /**
@@ -72,6 +74,15 @@ public class Model {
 
     public Automaton getAutomaton() {
         return automaton;
+    }
+
+    public LocalRule[] getArrayOfRules(int start, int end) {
+        Distribution dist = automaton.getDistribution();
+        LocalRule[] res = new LocalRule[end - start];
+        for (int i = 0; i < end - start; i++) {
+            res[i] = dist.getLocalRule(i + start);
+        }
+        return res;
     }
 
     public SpaceTimeDiagram getSpaceTimeDiagram() {

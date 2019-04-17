@@ -6,6 +6,8 @@
 
 package com.uca.nucas.gui;
 
+import com.uca.nucas.engine.distribution.Distribution;
+import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
@@ -17,6 +19,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+
+import java.util.HashMap;
 
 /**
  * Controller for the canvas and its containing pane
@@ -36,6 +40,8 @@ public class CanvasController {
     GraphicsContext ctx = null;
 
     private int pixelSize = 4;
+
+    private boolean drawDistMode = false;
 
     private int currentDrawHeight = 0;
 
@@ -83,7 +89,7 @@ public class CanvasController {
         }
     }
 
-    void drawSegment(int drawHeight, int step, int xStart, int xEnd, int pixelSize) {
+    void drawConfSegment(int drawHeight, int step, int xStart, int xEnd, int pixelSize) {
         int[] data = model.getSpaceTimeDiagram().getSegment(xStart, xEnd, step);
 
         PixelWriter pw = ctx.getPixelWriter();
@@ -105,8 +111,34 @@ public class CanvasController {
         cellsToDraw = Math.min(cellsToDraw, model.getSpaceTimeDiagram().getMaxConfSize());
 
         for (int i = 0; i < stepsToPaint; i++) {
-            drawSegment(i * pixelSize, verticalOffset + i, horizontalOffset, horizontalOffset + cellsToDraw, pixelSize);
+            drawConfSegment(i * pixelSize, verticalOffset + i, horizontalOffset, horizontalOffset + cellsToDraw, pixelSize);
         }
+    }
+
+    void paintDistribution(int horizontalOffset) {
+        clearCanvas();
+        LocalRule[] rules = model.getArrayOfRules(horizontalOffset, horizontalOffset + (int)Math.ceil(canvas.getWidth() / pixelSize));
+        double numRules = 0;
+        HashMap<LocalRule, Double> diffRules = new HashMap<>();
+        for (int i = 0; i < rules.length; i++) {
+            if (!diffRules.containsKey(rules[i])) {
+                diffRules.put(rules[i], numRules);
+                numRules++;
+            }
+        }
+
+        Color[] colors = new Color[rules.length];
+        for (int i = 0; i < colors.length; i++) {
+            colors[i] = Color.WHITE.interpolate(Color.BLACK, diffRules.get(rules[i]) / numRules);
+        }
+
+        PixelWriter pw = ctx.getPixelWriter();
+        for (int i = 0; i < (pixelSize * (int)Math.ceil(canvas.getWidth() / pixelSize)); i++) {
+            for (int j = 0; j < canvas.getHeight(); j++) {
+                pw.setColor(i, j, colors[(int)Math.ceil(i/pixelSize)]);
+            }
+        }
+
     }
 
     public void updateScrolling(){
@@ -129,8 +161,12 @@ public class CanvasController {
         int horizontalOffset = (int)Math.floor((sizePane.getWidth() - canvasPane.getWidth()) / pixelSize * hValue);
         int verticalOffset = (int)Math.floor((sizePane.getHeight() - canvasPane.getHeight()) / pixelSize * vValue);
 
-        if (model.hasRun()) {
-            paintWholeCanvas(horizontalOffset, verticalOffset);
+        if (drawDistMode) {
+            paintDistribution(horizontalOffset);
+        } else {
+            if (model.hasRun()) {
+                paintWholeCanvas(horizontalOffset, verticalOffset);
+            }
         }
     }
 
@@ -157,5 +193,9 @@ public class CanvasController {
 
     public void setPixelSize(int newSize) {
         pixelSize = newSize;
+    }
+
+    public void switchDistMode() {
+        drawDistMode = !drawDistMode;
     }
 }

@@ -173,4 +173,9 @@ public class MainWindowController {
         buildConfiguration(3);
         setupModelAndCanvas();
     }
+
+    public void drawDistModeButtonFired() {
+        canvasPaneController.switchDistMode();
+        canvasPaneController.updateScrolling();
+    }
 }

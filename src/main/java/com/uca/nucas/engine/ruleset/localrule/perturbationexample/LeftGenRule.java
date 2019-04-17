@@ -13,4 +13,14 @@ public class LeftGenRule implements LocalRule {
     public int getRadius() {
         return 0;
     }
+
+    @Override
+    public int hashCode() {
+        return 2;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof LeftGenRule);
+    }
 }
