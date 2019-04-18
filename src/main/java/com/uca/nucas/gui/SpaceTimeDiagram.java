@@ -16,6 +16,10 @@ public class SpaceTimeDiagram {
         return data.get(index);
     }
 
+    public Configuration getLast() {
+        return data.get(data.size() - 1);
+    }
+
     public int getMaxConfSize() {
         return maxConfSize;
     }

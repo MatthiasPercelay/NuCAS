@@ -30,10 +30,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 import java.util.Random;
 
@@ -63,6 +66,9 @@ public class MainWindowController {
 
     @FXML
     public ComboBox<String> stateSelectBox;
+
+    @FXML
+    public Canvas stateColorSwatch;
 
     Model model = null;
 
@@ -105,7 +111,15 @@ public class MainWindowController {
                                  @Override
                                  public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                                      model.setCurrentEditingState((int)t1 - 1);
-                                 System.out.println(model.getCurrentEditingState());
+                                     GraphicsContext gc = stateColorSwatch.getGraphicsContext2D();
+                                     Paint fill;
+                                     try {
+                                         fill = model.getStateColor(model.getCurrentEditingState());
+                                     } catch (ArrayIndexOutOfBoundsException e) {
+                                         fill = Color.color(0, 0, 0, 0);
+                                     }
+                                     gc.setFill(fill);
+                                     gc.fillRect(0, 0, 25, 25);
                                  }
                              }
                 );
@@ -156,6 +170,10 @@ public class MainWindowController {
         canvasPaneController.clearCanvas();
         canvasPaneController.updateScrolling();
         System.out.println("Automaton run");
+    }
+
+    public void stepButtonFired() {
+        model.runOneStep();
     }
 
     public void perturbationButtonFired() {

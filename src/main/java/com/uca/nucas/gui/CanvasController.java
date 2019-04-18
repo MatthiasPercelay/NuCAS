@@ -6,7 +6,6 @@
 
 package com.uca.nucas.gui;
 
-import com.uca.nucas.engine.distribution.Distribution;
 import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -60,13 +59,36 @@ public class CanvasController {
                 System.out.println(clickX + ", " + clickY);
             }
         };
-        //sizePane.addEventFilter(MouseEvent.MOUSE_CLICKED, clickHandler);
 
-        sizePane.addEventHandler(MouseEvent.ANY, mouseEvent -> {
+        sizePane.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             if (mouseEvent.getButton() == MouseButton.MIDDLE) {
                 int clickX = (int)Math.floor(mouseEvent.getX() / pixelSize);
                 int clickY = (int)Math.floor(mouseEvent.getY() / pixelSize);
                 model.getSpaceTimeDiagram().editStartingConfiguration(clickX, model.getCurrentEditingState());
+                model.runAutomaton();
+                updateScrolling();
+            }
+        });
+
+        sizePane.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                //System.out.println("mouse pressed " + mouseEvent.getX() + " " + mouseEvent.getY());
+                //mouseEvent.setDragDetect(true);
+            }
+        });
+
+        sizePane.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                //System.out.println("mouse released " + mouseEvent.getX() + " " + mouseEvent.getY());
+            }
+        });
+
+        sizePane.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                //System.out.println("mouse dragged" + mouseEvent.getX() + " " + mouseEvent.getY());
             }
         });
     }
@@ -181,6 +203,7 @@ public class CanvasController {
      */
     public void clearCanvas() {
         ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        currentDrawHeight = 0;
     }
 
     public void setModel(Model model) {

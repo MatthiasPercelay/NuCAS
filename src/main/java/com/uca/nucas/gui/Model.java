@@ -34,6 +34,8 @@ public class Model {
      */
     private int maxSteps = 0;
 
+    private int currentSteps = 0;
+
     /**
      * indicates whether or not the current automaton has started its simulation
      */
@@ -61,10 +63,17 @@ public class Model {
      */
     public void runAutomaton() {
         Configuration conf = spaceTimeDiagram.get(0);
-        for (int i = 0; i < maxSteps; i++) {
+        for (int i = currentSteps; i < maxSteps; i++) {
             conf = automaton.evaluate(conf);
             spaceTimeDiagram.append(conf);
+            currentSteps = i + 1;
         }
+        hasRun = true;
+    }
+
+    public void runOneStep() {
+        Configuration conf = automaton.evaluate(spaceTimeDiagram.getLast());
+        currentSteps++;
         hasRun = true;
     }
 
@@ -100,6 +109,7 @@ public class Model {
     public void resetToStart() {
         spaceTimeDiagram.clearComputations();
         hasRun = false;
+        currentSteps = 0;
     }
 
     public Color getStateColor(int state) {
