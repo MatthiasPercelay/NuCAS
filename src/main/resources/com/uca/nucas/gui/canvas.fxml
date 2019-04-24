@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <!--
   ~ Developed by Matthias Percelay. Created on 27/03/19 23:00.
@@ -10,12 +12,31 @@
   ~ Copyright (c) 2019. All rights reserved
   -->
 
-<ScrollPane fx:id="canvasPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.CanvasController">
-   <content>
-      <Pane fx:id="sizePane">
+<AnchorPane fx:id="canvasPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.CanvasController">
+   <children>
+      <HBox fx:id="outerHBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Canvas fx:id="canvas" height="200.0" width="200.0" />
+            <AnchorPane fx:id="anchorPane">
+               <children>
+                  <VBox fx:id="innerVBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <AnchorPane fx:id="distAnchor" maxHeight="30.0" minHeight="30.0" prefHeight="30.0">
+                           <children>
+                              <Canvas fx:id="distCanvas" height="30.0" width="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="confAnchor">
+                           <children>
+                              <Canvas fx:id="confCanvas" height="600.0" width="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <ScrollBar fx:id="horizontalBar" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <ScrollBar fx:id="verticalBar" orientation="VERTICAL" />
          </children>
-      </Pane>
-   </content>
-</ScrollPane>
+      </HBox>
+   </children>
+</AnchorPane>

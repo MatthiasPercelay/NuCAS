@@ -14,8 +14,6 @@ import com.uca.nucas.engine.Automaton;
 import com.uca.nucas.engine.alphabet.BinaryAlphabet;
 import com.uca.nucas.engine.alphabet.TernaryAlphabet;
 import com.uca.nucas.engine.configuration.Configuration;
-import com.uca.nucas.engine.configuration.GrowingConfiguration;
-import com.uca.nucas.engine.configuration.LossyConfiguration;
 import com.uca.nucas.engine.configuration.WrappingConfiguration;
 import com.uca.nucas.engine.distribution.DefaultBoundDistribution;
 import com.uca.nucas.engine.distribution.Distribution;
@@ -28,13 +26,16 @@ import com.uca.nucas.engine.ruleset.localrule.perturbationexample.RightGenRule;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -73,7 +74,7 @@ public class MainWindowController {
     Model model = null;
 
     @FXML
-    public ScrollPane canvasPane;
+    public AnchorPane center;
 
     @FXML
     public CanvasController canvasPaneController;
@@ -82,47 +83,54 @@ public class MainWindowController {
     private BorderPane hostWindow;
 
     @FXML
-    private AnchorPane bottom;
-
-    @FXML
-    private AnchorPane right;
-
-    @FXML
-    private AnchorPane left;
+    VBox top;
 
     public void initialize() {
         model = Model.getModelInstance();
         canvasPaneController.setModel(model);
+
+        hostWindow.widthProperty().addListener(this::updateWidth);
+
+        hostWindow.heightProperty().addListener(this::updateHeight);
 
         pixelSizeBox.getSelectionModel()
                 .selectedItemProperty()
                 .addListener( (ObservableValue<? extends String> observable, String oldValue, String newValue) ->
                 {
                     canvasPaneController.setPixelSize(Integer.parseInt(newValue));
-                    canvasPaneController.clearCanvas();
+                    canvasPaneController.clearConfCanvas();
                     int width = model.getSpaceTimeDiagram().getMaxConfSize();
                     int height = model.getMaxSteps();
-                    canvasPaneController.setSizePaneDims(width, height, canvasPaneController.getPixelSize());
+                    canvasPaneController.setupScrollbars(width, height);
                 });
 
         stateSelectBox.getSelectionModel()
                 .selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
-                                 @Override
-                                 public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                                     model.setCurrentEditingState((int)t1 - 1);
-                                     GraphicsContext gc = stateColorSwatch.getGraphicsContext2D();
-                                     Paint fill;
-                                     try {
-                                         fill = model.getStateColor(model.getCurrentEditingState());
-                                     } catch (ArrayIndexOutOfBoundsException e) {
-                                         fill = Color.color(0, 0, 0, 0);
-                                     }
-                                     gc.setFill(fill);
-                                     gc.fillRect(0, 0, 25, 25);
-                                 }
-                             }
+                .addListener((observableValue, number, t1) -> {
+                    model.setCurrentEditingState((int)t1 - 1);
+                    GraphicsContext gc = stateColorSwatch.getGraphicsContext2D();
+                    Paint fill;
+                    try {
+                        fill = model.getStateColor(model.getCurrentEditingState());
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        fill = Color.color(0, 0, 0, 0);
+                    }
+                    gc.setFill(fill);
+                    gc.fillRect(0, 0, 25, 25);
+                }
                 );
+
+        /**
+         * event handler that finalises setup the first time the user interacts with the program, then removes itself
+         */
+        hostWindow.addEventHandler(Event.ANY, new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                updateHeight();
+                updateWidth();
+                hostWindow.removeEventHandler(Event.ANY, this);
+            }
+        });
     }
 
     void buildAutomaton() {
@@ -142,6 +150,7 @@ public class MainWindowController {
         for (int i = 0; i < contents.length; i++) {
             contents[i] = rand.nextInt(noStates);
         }
+
         Configuration conf = new WrappingConfiguration(contents);
         model.getSpaceTimeDiagram().setStartingConfiguration(conf);
         System.out.println("Configuration added to model");
@@ -154,8 +163,8 @@ public class MainWindowController {
         model.resetToStart();
         int width = model.getSpaceTimeDiagram().getMaxConfSize();
         int height = model.getMaxSteps();
-        canvasPaneController.setSizePaneDims(width, height, canvasPaneController.getPixelSize());
-        canvasPaneController.clearCanvas();
+        canvasPaneController.setupScrollbars(width, height);
+        canvasPaneController.clearConfCanvas();
     }
 
     public void generateButtonFired() {
@@ -167,7 +176,7 @@ public class MainWindowController {
     public void runButtonFired() {
         model.resetToStart();
         model.runAutomaton();
-        canvasPaneController.clearCanvas();
+        canvasPaneController.clearConfCanvas();
         canvasPaneController.updateScrolling();
         System.out.println("Automaton run");
     }
@@ -192,8 +201,21 @@ public class MainWindowController {
         setupModelAndCanvas();
     }
 
-    public void drawDistModeButtonFired() {
-        canvasPaneController.switchDistMode();
-        canvasPaneController.updateScrolling();
+    private void updateWidth(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+        updateWidth();
+    }
+
+    private void updateWidth() {
+        canvasPaneController.canvasPane.setMinWidth(hostWindow.getWidth());
+        canvasPaneController.canvasPane.setMaxWidth(hostWindow.getWidth());
+    }
+
+    private void updateHeight(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+        updateHeight();
+    }
+
+    private void updateHeight() {
+        canvasPaneController.canvasPane.setMinHeight(hostWindow.getHeight() - top.getHeight());
+        canvasPaneController.canvasPane.setMaxHeight(hostWindow.getHeight() - top.getHeight());
     }
 }

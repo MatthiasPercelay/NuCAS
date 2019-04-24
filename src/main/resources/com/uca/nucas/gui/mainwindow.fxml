@@ -23,12 +23,12 @@
   ~ Copyright (c) 2019. All rights reserved
   -->
 
-<BorderPane fx:id="hostWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.MainWindowController">
+<BorderPane fx:id="hostWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.MainWindowController">
    <bottom>
-      <AnchorPane fx:id="bottom" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="bottom" disable="true" prefHeight="0.0" BorderPane.alignment="CENTER" />
    </bottom>
    <right>
-      <AnchorPane fx:id="right" prefHeight="334.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="right" disable="true" prefWidth="0.0" BorderPane.alignment="CENTER" />
    </right>
    <center>
        <AnchorPane fx:id="center" BorderPane.alignment="CENTER">
@@ -36,10 +36,10 @@
        </AnchorPane>
    </center>
    <left>
-      <AnchorPane fx:id="left" prefHeight="334.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="left" disable="true" prefWidth="0.0" BorderPane.alignment="CENTER" />
    </left>
    <top>
-      <VBox prefHeight="65.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="top" prefHeight="65.0" BorderPane.alignment="CENTER">
          <children>
             <MenuBar>
               <menus>
@@ -75,7 +75,7 @@
                       </items>
                   </ChoiceBox>
                   <Button fx:id="runButton" mnemonicParsing="false" onAction="#runButtonFired" text="run" />
-                  <ToggleButton fx:id="drawDistModeButton" mnemonicParsing="false" onAction="#drawDistModeButtonFired" text="Show distribution" />
+                  <ToggleButton fx:id="drawDistModeButton" mnemonicParsing="false" text="Show distribution" />
               </items>
             </ToolBar>
             <ToolBar prefHeight="40.0" prefWidth="200.0">

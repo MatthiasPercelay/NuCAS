@@ -9,14 +9,16 @@ package com.uca.nucas.gui;
 import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.util.HashMap;
@@ -25,56 +27,83 @@ import java.util.HashMap;
  * Controller for the canvas and its containing pane
  */
 public class CanvasController {
+
+    @FXML
+    public AnchorPane canvasPane;
+    @FXML
+    public Canvas distCanvas;
+    @FXML
+    public Canvas confCanvas;
+    @FXML
+    public ScrollBar horizontalBar;
+    @FXML
+    public ScrollBar verticalBar;
+    @FXML
+    public VBox innerVBox;
+    @FXML
+    public AnchorPane anchorPane;
+    @FXML
+    public HBox outerHBox;
+
     private Model model = null;
 
-    @FXML
-    ScrollPane canvasPane;
-
-    @FXML
-    Pane sizePane;
-
-    @FXML
-    Canvas canvas;
-
-    GraphicsContext ctx = null;
+    GraphicsContext distCTX = null;
+    GraphicsContext confCTX = null;
 
     private int pixelSize = 4;
-
-    private boolean drawDistMode = false;
 
     private int currentDrawHeight = 0;
 
     public void initialize() {
-        ctx = canvas.getGraphicsContext2D();
+        confCTX = confCanvas.getGraphicsContext2D();
+        distCTX = distCanvas.getGraphicsContext2D();
 
-        canvasPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> updateScrolling());
-        canvasPane.hvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling());
-        canvasPane.vvalueProperty().addListener((observable, oldValue, newValue) -> updateScrolling());
+        canvasPane.heightProperty().addListener(((observable, oldValue, newValue) -> {
+            confCanvas.setHeight(canvasPane.getHeight() - distCanvas.getHeight() - horizontalBar.getHeight());
+            System.out.println(horizontalBar.getHeight());
+            System.out.println(horizontalBar.getWidth());
+            updateScrolling();
+        }));
 
-        EventHandler<MouseEvent> clickHandler = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                int clickX = (int)Math.floor(mouseEvent.getX() / pixelSize);
-                int clickY = (int)Math.floor(mouseEvent.getY() / pixelSize);
-                System.out.println(clickX + ", " + clickY);
+        canvasPane.widthProperty().addListener(((observable, oldValue, newValue) -> {
+            distCanvas.setWidth(canvasPane.getWidth() - verticalBar.getWidth());
+            confCanvas.setWidth(canvasPane.getWidth() - verticalBar.getWidth());
+            updateScrolling();
+        }));
+
+        verticalBar.valueProperty().addListener((observable, oldValue, newValue) -> {
+            updateScrolling();
+        });
+
+        horizontalBar.valueProperty().addListener((observable, oldValue, newValue) -> {
+            updateScrolling();
+        });
+
+        confCanvas.addEventHandler(ScrollEvent.SCROLL, scrollEvent -> {
+            if (scrollEvent.getDeltaY() < 0) {
+                verticalBar.increment();
+            } else {
+                verticalBar.decrement();
             }
-        };
+        });
 
-        sizePane.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            if (mouseEvent.getButton() == MouseButton.MIDDLE) {
+        confCanvas.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.SECONDARY) {
                 int clickX = (int)Math.floor(mouseEvent.getX() / pixelSize);
                 int clickY = (int)Math.floor(mouseEvent.getY() / pixelSize);
-                model.getSpaceTimeDiagram().editStartingConfiguration(clickX, model.getCurrentEditingState());
+                model.getSpaceTimeDiagram().editStartingConfiguration((int)horizontalBar.getValue() + clickX, model.getCurrentEditingState());
                 model.runAutomaton();
                 updateScrolling();
             }
         });
 
-        sizePane.setOnMousePressed(new EventHandler<MouseEvent>() {
+        /*sizePane.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 //System.out.println("mouse pressed " + mouseEvent.getX() + " " + mouseEvent.getY());
                 //mouseEvent.setDragDetect(true);
+                System.out.println(canvas.getWidth());
+                System.out.println(canvasPane.getViewportBounds().getWidth());
             }
         });
 
@@ -90,7 +119,7 @@ public class CanvasController {
             public void handle(MouseEvent mouseEvent) {
                 //System.out.println("mouse dragged" + mouseEvent.getX() + " " + mouseEvent.getY());
             }
-        });
+        });*/
     }
 
     /**
@@ -100,7 +129,7 @@ public class CanvasController {
      * @param pixelSize size of the "pixels"
      */
     public void drawLinePixelSize(int height, Color[] content, int pixelSize) {
-        PixelWriter pw = ctx.getPixelWriter();
+        PixelWriter pw = confCTX.getPixelWriter();
 
         for (int i = 0; i < content.length; i++) {
             for (int j = 0; j < pixelSize; j++) {
@@ -114,7 +143,7 @@ public class CanvasController {
     void drawConfSegment(int drawHeight, int step, int xStart, int xEnd, int pixelSize) {
         int[] data = model.getSpaceTimeDiagram().getSegment(xStart, xEnd, step);
 
-        PixelWriter pw = ctx.getPixelWriter();
+        PixelWriter pw = confCTX.getPixelWriter();
 
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < pixelSize; j++) {
@@ -126,10 +155,10 @@ public class CanvasController {
     }
 
     void paintWholeCanvas(int horizontalOffset, int verticalOffset) {
-        clearCanvas();
-        int stepsToPaint = (int)Math.floor(canvas.getHeight() / pixelSize);
+        clearConfCanvas();
+        int stepsToPaint = (int)Math.floor(confCanvas.getHeight() / pixelSize);
         stepsToPaint = Math.min(stepsToPaint, model.getSpaceTimeDiagram().getConfCount() - verticalOffset);
-        int cellsToDraw = (int)Math.floor(canvas.getWidth() / pixelSize);
+        int cellsToDraw = (int)Math.floor(confCanvas.getWidth() / pixelSize);
         cellsToDraw = Math.min(cellsToDraw, model.getSpaceTimeDiagram().getMaxConfSize());
 
         for (int i = 0; i < stepsToPaint; i++) {
@@ -138,8 +167,8 @@ public class CanvasController {
     }
 
     void paintDistribution(int horizontalOffset) {
-        clearCanvas();
-        LocalRule[] rules = model.getArrayOfRules(horizontalOffset, horizontalOffset + (int)Math.ceil(canvas.getWidth() / pixelSize));
+        clearDistCanvas();
+        LocalRule[] rules = model.getArrayOfRules(horizontalOffset, horizontalOffset + (int)Math.ceil(distCanvas.getWidth() / pixelSize));
         double numRules = 0;
         HashMap<LocalRule, Double> diffRules = new HashMap<>();
         for (int i = 0; i < rules.length; i++) {
@@ -154,9 +183,9 @@ public class CanvasController {
             colors[i] = Color.WHITE.interpolate(Color.BLACK, diffRules.get(rules[i]) / numRules);
         }
 
-        PixelWriter pw = ctx.getPixelWriter();
-        for (int i = 0; i < (pixelSize * (int)Math.ceil(canvas.getWidth() / pixelSize)); i++) {
-            for (int j = 0; j < canvas.getHeight(); j++) {
+        PixelWriter pw = distCTX.getPixelWriter();
+        for (int i = 0; i < (pixelSize * (int)Math.ceil(distCanvas.getWidth() / pixelSize)); i++) {
+            for (int j = 0; j < distCanvas.getHeight(); j++) {
                 pw.setColor(i, j, colors[(int)Math.ceil(i/pixelSize)]);
             }
         }
@@ -164,46 +193,49 @@ public class CanvasController {
     }
 
     public void updateScrolling(){
-        double hValue = canvasPane.getHvalue();
-        double vValue = canvasPane.getVvalue();
+        double hValue = horizontalBar.getValue();
+        double vValue = verticalBar.getValue();
 
-        Bounds bounds = canvasPane.getViewportBounds();
-        double portWidth = bounds.getWidth();
-        canvas.setWidth(portWidth);
-        double portHeight = bounds.getHeight();
-        canvas.setHeight(portHeight);
+        int horizontalOffset = (int)hValue;
+        int verticalOffset = (int)vValue;
 
-        double canvasX = (canvasPane.getContent().getBoundsInParent().getWidth() - portWidth) * hValue;
-
-        double canvasY = (canvasPane.getContent().getBoundsInParent().getHeight() - portHeight) * vValue;
-
-        canvas.relocate(canvasX, canvasY);
-        canvasPane.setMaxWidth(portWidth);
-
-        int horizontalOffset = (int)Math.floor((sizePane.getWidth() - canvasPane.getWidth()) / pixelSize * hValue);
-        int verticalOffset = (int)Math.floor((sizePane.getHeight() - canvasPane.getHeight()) / pixelSize * vValue);
-
-        if (drawDistMode) {
+        if (model.hasRun()) {
             paintDistribution(horizontalOffset);
-        } else {
-            if (model.hasRun()) {
-                paintWholeCanvas(horizontalOffset, verticalOffset);
-            }
+            paintWholeCanvas(horizontalOffset, verticalOffset);
         }
     }
 
-    void setSizePaneDims(int width, int height, int pixelSize) {
-        sizePane.setMinSize(width * pixelSize, height * pixelSize);
-        sizePane.setMaxSize(width * pixelSize, height * pixelSize);
+    public void setupScrollbars(int confWidth, int maxSteps) {
+        setScrollDimensions(confWidth, maxSteps);
+        setScrollIncrements();
     }
 
+    public void setScrollDimensions(int h, int v) {
+        horizontalBar.setMin(0);
+        horizontalBar.setMax(h);
+
+        verticalBar.setMin(0);
+        verticalBar.setMax(v);
+    }
+
+    public void setScrollIncrements() {
+        horizontalBar.setUnitIncrement(4);
+        verticalBar.setUnitIncrement(4);
+
+        horizontalBar.setBlockIncrement(16);
+        verticalBar.setBlockIncrement(16);
+    }
 
     /**
      * clears the canvas
      */
-    public void clearCanvas() {
-        ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    public void clearConfCanvas() {
+        confCTX.clearRect(0, 0, confCanvas.getWidth(), confCanvas.getHeight());
         currentDrawHeight = 0;
+    }
+
+    public void clearDistCanvas() {
+        distCTX.clearRect(0, 0, distCanvas.getWidth(), distCanvas.getHeight());
     }
 
     public void setModel(Model model) {
@@ -218,7 +250,4 @@ public class CanvasController {
         pixelSize = newSize;
     }
 
-    public void switchDistMode() {
-        drawDistMode = !drawDistMode;
-    }
 }
