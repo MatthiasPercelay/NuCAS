@@ -8,7 +8,6 @@ package com.uca.nucas.engine.configuration;
 
 import com.uca.nucas.engine.Automaton;
 import com.uca.nucas.engine.distribution.Distribution;
-import com.uca.nucas.engine.ruleset.RuleSet;
 
 /**
  * Configuration that grows each step to maintain perfect information
@@ -37,13 +36,13 @@ public class GrowingConfiguration extends AbstractConfiguration {
 
     @Override
     public int getCell(int index) {
-        if (index < 0 || index >= contents.length) return defaultState;
-        else return contents[index];
+        if (index < 0 - originOffset || index >= contents.length - originOffset) return defaultState;
+        else return contents[index + originOffset];
     }
 
     @Override
     public void setCell(int index, int state) {
-        contents[index] = state;
+        contents[index + originOffset] = state;
     }
 
     @Override
@@ -61,33 +60,15 @@ public class GrowingConfiguration extends AbstractConfiguration {
         return new GrowingConfiguration(this, compute(automaton), automaton);
     }
 
-    private int[] grow(int[] contents, int radius) {
-        int[] res = new int[contents.length + 2 * radius];
-        for (int i = 0; i < radius; i++) {
-            res[i] = defaultState;
-            res[res.length - 1 - i] = defaultState;
-        }
-        for (int i = 0; i < contents.length; i++) {
-            res[radius + i] = contents[i];
-        }
-        return res;
-    }
-
     int[] compute(Automaton automaton) {
         int radius = automaton.getRadius();
-        int offset = getDistributionOffset();
+        int offset = getDistributionOffset() + radius;
         Distribution dist = automaton.getDistribution();
 
         int[] res = new int[getSize() + 2 * radius];
 
-        for (int i = 0; i < radius; i++) {
-            res[i] = defaultState;
-        }
-        for (int i = radius; i < getSize() + radius; i++) {
-            res[i] = dist.getLocalRule(i - offset).evaluate(i, this);
-        }
-        for (int i = getSize() + radius; i < res.length; i++) {
-            res[i] = defaultState;
+        for(int i = 0; i < res.length; i++) {
+            res[i] = dist.getLocalRule(i - offset).evaluate(i - offset, this);
         }
         return res;
     }
