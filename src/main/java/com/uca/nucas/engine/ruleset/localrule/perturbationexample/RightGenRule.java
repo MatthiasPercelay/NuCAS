@@ -16,8 +16,10 @@ public class RightGenRule implements LocalRule {
 
     @Override
     public int hashCode() {
-        return 1;
+        return "RightGenRule".hashCode();
     }
+
+
 
     @Override
     public boolean equals(Object obj) {

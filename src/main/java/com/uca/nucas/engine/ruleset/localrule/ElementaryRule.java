@@ -8,6 +8,8 @@ package com.uca.nucas.engine.ruleset.localrule;
 
 import com.uca.nucas.engine.configuration.Configuration;
 
+import java.util.Arrays;
+
 public class ElementaryRule implements LocalRule {
     int[] transitions;
 
@@ -32,5 +34,18 @@ public class ElementaryRule implements LocalRule {
     @Override
     public int getRadius() {
         return 1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ElementaryRule that = (ElementaryRule) o;
+        return Arrays.equals(transitions, that.transitions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(transitions);
     }
 }

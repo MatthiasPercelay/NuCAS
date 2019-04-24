@@ -22,7 +22,7 @@ public class MainRule implements LocalRule {
 
     @Override
     public int hashCode() {
-        return 0;
+        return "MainRule".hashCode();
     }
 
     @Override

@@ -16,7 +16,7 @@ public class LeftGenRule implements LocalRule {
 
     @Override
     public int hashCode() {
-        return 2;
+        return "LeftGenRule".hashCode();
     }
 
     @Override
