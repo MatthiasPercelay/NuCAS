@@ -54,14 +54,15 @@ public class CanvasController {
 
     private int currentDrawHeight = 0;
 
+    private int pressedX = 0;
+    private boolean rightClickPressed = false;
+
     public void initialize() {
         confCTX = confCanvas.getGraphicsContext2D();
         distCTX = distCanvas.getGraphicsContext2D();
 
         canvasPane.heightProperty().addListener(((observable, oldValue, newValue) -> {
             confCanvas.setHeight(canvasPane.getHeight() - distCanvas.getHeight() - horizontalBar.getHeight());
-            System.out.println(horizontalBar.getHeight());
-            System.out.println(horizontalBar.getWidth());
             updateScrolling();
         }));
 
@@ -93,34 +94,27 @@ public class CanvasController {
                 int clickY = (int)Math.floor(mouseEvent.getY() / pixelSize);
                 int offset = model.getSpaceTimeDiagram().getMaxDistOffset();
                 model.getSpaceTimeDiagram().editStartingConfiguration((int)horizontalBar.getValue() + clickX - offset, model.getCurrentEditingState());
-                model.runAutomaton();
                 updateScrolling();
             }
         });
 
-        /*sizePane.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                //System.out.println("mouse pressed " + mouseEvent.getX() + " " + mouseEvent.getY());
-                //mouseEvent.setDragDetect(true);
-                System.out.println(canvas.getWidth());
-                System.out.println(canvasPane.getViewportBounds().getWidth());
+        confCanvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+                pressedX = (int)Math.floor(mouseEvent.getX() / pixelSize);
+                rightClickPressed = true;
             }
         });
 
-        sizePane.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                //System.out.println("mouse released " + mouseEvent.getX() + " " + mouseEvent.getY());
+        confCanvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.SECONDARY && rightClickPressed) {
+                int endX = (int) Math.floor(mouseEvent.getX() / pixelSize);
+                int offset = model.getSpaceTimeDiagram().getMaxDistOffset();
+                for (int i = pressedX; i <= endX; i++) {
+                    model.getSpaceTimeDiagram().editStartingConfiguration((int)horizontalBar.getValue() + i - offset, model.getCurrentEditingState());
+                }
+                rightClickPressed = false;
             }
         });
-
-        sizePane.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                //System.out.println("mouse dragged" + mouseEvent.getX() + " " + mouseEvent.getY());
-            }
-        });*/
     }
 
     /**
