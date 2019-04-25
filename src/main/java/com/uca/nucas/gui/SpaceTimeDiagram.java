@@ -47,6 +47,7 @@ public class SpaceTimeDiagram {
         data = new ArrayList<>();
         data.add(start);
         maxConfSize = start.getGreatestSize();
+        maxOffset = start.getDistributionOffset();
     }
 
     public void setStartingConfiguration(Configuration startingConfiguration) {
@@ -58,7 +59,7 @@ public class SpaceTimeDiagram {
     }
 
     public void editStartingConfiguration(int index, int state) {
-        if(data.size() != 0) {
+        if(data.size() != 0 && index >= 0 && index <= data.get(0).getSize()) {
             data.get(0).setCell(index, state);
         }
     }

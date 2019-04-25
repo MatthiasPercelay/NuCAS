@@ -65,5 +65,7 @@ public interface Configuration {
 
     public int getDistributionOffset();
 
+    public int[] getContents();
+
     public Configuration accept(Automaton automaton);
 }

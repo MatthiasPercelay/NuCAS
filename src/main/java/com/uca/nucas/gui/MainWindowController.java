@@ -73,6 +73,9 @@ public class MainWindowController {
     @FXML
     public Canvas stateColorSwatch;
 
+    @FXML
+    public ChoiceBox confModeBox;
+
     Model model = null;
 
     @FXML
@@ -104,6 +107,7 @@ public class MainWindowController {
                     int width = model.getSpaceTimeDiagram().getMaxConfSize();
                     int height = model.getMaxSteps();
                     canvasPaneController.setupScrollbars(width, height);
+                    canvasPaneController.updateScrolling();
                 });
 
         stateSelectBox.getSelectionModel()
@@ -121,6 +125,26 @@ public class MainWindowController {
                     gc.fillRect(0, 0, 25, 25);
                 }
                 );
+
+        confModeBox.getSelectionModel()
+                .selectedItemProperty()
+                .addListener(((observable, oldValue, newValue) -> {
+                    if (!oldValue.equals(newValue)) {
+                        SpaceTimeDiagram std = model.getSpaceTimeDiagram();
+                        Configuration newConf;
+                        int[] contents = std.get(0).getContents();
+                        if (newValue.equals("wrapping")) newConf = new WrappingConfiguration(contents);
+                        else if (newValue.equals("growing")) newConf = new GrowingConfiguration(contents, 0);
+                        else newConf = new LossyConfiguration(contents, -1);
+                        std.setStartingConfiguration(newConf);
+
+                        canvasPaneController.clearDistCanvas();
+                        canvasPaneController.clearConfCanvas();
+                        model.resetToStart();
+                        model.runAutomaton();
+                        canvasPaneController.updateScrolling();
+                    }
+                }));
 
         /**
          * event handler that finalises setup the first time the user interacts with the program, then removes itself
@@ -153,9 +177,10 @@ public class MainWindowController {
             contents[i] = rand.nextInt(noStates);
         }
 
-        //Configuration conf = new WrappingConfiguration(contents);
-        Configuration conf = new GrowingConfiguration(contents, 0);
-        //Configuration conf = new LossyConfiguration(contents, -1);
+        Configuration conf;
+        if (confModeBox.getValue().equals("wrapping")) conf = new WrappingConfiguration(contents);
+        else if (confModeBox.getValue().equals("growing")) conf = new GrowingConfiguration(contents, 0);
+        else conf = new LossyConfiguration(contents, -1);
         model.getSpaceTimeDiagram().setStartingConfiguration(conf);
         System.out.println("Configuration added to model");
     }
