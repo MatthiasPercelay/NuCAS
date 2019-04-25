@@ -73,7 +73,7 @@
                           </FXCollections>
                       </items>
                   </ChoiceBox>
-                  <Button fx:id="runButton" mnemonicParsing="false" onAction="#runButtonFired" text="run" />
+                  <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshButtonFired" text="refresh" />
               </items>
             </ToolBar>
             <ToolBar prefHeight="40.0" prefWidth="200.0">

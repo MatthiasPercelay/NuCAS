@@ -65,7 +65,7 @@ public class MainWindowController {
     public TextField widthField;
 
     @FXML
-    public Button runButton;
+    public Button refreshButton;
 
     @FXML
     public ComboBox<String> stateSelectBox;
@@ -200,9 +200,10 @@ public class MainWindowController {
         buildAutomaton();
         buildConfiguration(2);
         setupModelAndCanvas();
+        refreshButtonFired();
     }
 
-    public void runButtonFired() {
+    public void refreshButtonFired() {
         model.resetToStart();
         model.runAutomaton();
         canvasPaneController.clearConfCanvas();
@@ -228,6 +229,7 @@ public class MainWindowController {
 
         buildConfiguration(3);
         setupModelAndCanvas();
+        refreshButtonFired();
     }
 
     private void updateWidth(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
