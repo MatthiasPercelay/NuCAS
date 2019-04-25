@@ -91,7 +91,8 @@ public class CanvasController {
             if (mouseEvent.getButton() == MouseButton.SECONDARY) {
                 int clickX = (int)Math.floor(mouseEvent.getX() / pixelSize);
                 int clickY = (int)Math.floor(mouseEvent.getY() / pixelSize);
-                model.getSpaceTimeDiagram().editStartingConfiguration((int)horizontalBar.getValue() + clickX, model.getCurrentEditingState());
+                int offset = model.getSpaceTimeDiagram().getMaxDistOffset();
+                model.getSpaceTimeDiagram().editStartingConfiguration((int)horizontalBar.getValue() + clickX - offset, model.getCurrentEditingState());
                 model.runAutomaton();
                 updateScrolling();
             }

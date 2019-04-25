@@ -11,7 +11,6 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -75,7 +74,6 @@
                       </items>
                   </ChoiceBox>
                   <Button fx:id="runButton" mnemonicParsing="false" onAction="#runButtonFired" text="run" />
-                  <ToggleButton fx:id="drawDistModeButton" mnemonicParsing="false" text="Show distribution" />
               </items>
             </ToolBar>
             <ToolBar prefHeight="40.0" prefWidth="200.0">
@@ -84,7 +82,17 @@
                   <TextField fx:id="codeField" prefWidth="80.0" promptText="code" text="110" />
                   <Separator orientation="VERTICAL" prefHeight="30.0" />
                   <Button fx:id="perturbationButton" mnemonicParsing="false" onAction="#perturbationButtonFired" text="perturbation model" />
-                  <ComboBox fx:id="stateSelectBox" prefHeight="26.0" prefWidth="80.0" promptText="state" />
+                  <Separator orientation="VERTICAL" prefHeight="30.0" />
+                  <ChoiceBox fx:id="confModeBox" prefWidth="100.0" value="wrapping">
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="wrapping" />
+                              <String fx:value="growing" />
+                              <String fx:value="lossy" />
+                          </FXCollections>
+                      </items>
+                  </ChoiceBox>
+                  <ComboBox fx:id="stateSelectBox" prefWidth="80.0" promptText="state" />
                   <Canvas fx:id="stateColorSwatch" height="25.0" width="25.0" />
               </items>
             </ToolBar>

@@ -42,6 +42,11 @@ public abstract class AbstractConfiguration implements Configuration {
     }
 
     @Override
+    public int[] getContents() {
+        return contents;
+    }
+
+    @Override
     public abstract Configuration accept(Automaton automaton);
 
     /**
