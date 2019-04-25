@@ -36,12 +36,19 @@ public class SpaceTimeDiagram {
         return data.size();
     }
 
+    /**
+     * appends a new configuration to the space time diagram
+     * @param conf
+     */
     public void append(Configuration conf) {
         data.add(conf);
         maxConfSize = Math.max(maxConfSize, conf.getSize());
         maxOffset = Math.max(maxOffset, conf.getDistributionOffset());
     }
 
+    /**
+     * resets the space time diagram to the starting configuration
+     */
     public void clearComputations() {
         Configuration start = data.get(0);
         data = new ArrayList<>();
@@ -58,12 +65,24 @@ public class SpaceTimeDiagram {
         }
     }
 
+    /**
+     * updates the starting configuration provided that the update is within bounds
+     * @param index
+     * @param state
+     */
     public void editStartingConfiguration(int index, int state) {
         if(data.size() != 0 && index >= 0 && index <= data.get(0).getSize()) {
             data.get(0).setCell(index, state);
         }
     }
 
+    /**
+     * returns a segment of a configuration for display purposes
+     * @param startPoint
+     * @param endPoint
+     * @param step
+     * @return
+     */
     public int[] getSegment(int startPoint, int endPoint, int step) {
         Configuration configuration = data.get(step);
         startPoint = Math.min(startPoint, maxConfSize);

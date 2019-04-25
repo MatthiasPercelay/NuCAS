@@ -29,7 +29,7 @@ import java.util.HashMap;
 public class CanvasController {
 
     @FXML
-    public AnchorPane canvasPane;
+    public AnchorPane canvasRegion;
     @FXML
     public Canvas distCanvas;
     @FXML
@@ -61,14 +61,14 @@ public class CanvasController {
         confCTX = confCanvas.getGraphicsContext2D();
         distCTX = distCanvas.getGraphicsContext2D();
 
-        canvasPane.heightProperty().addListener(((observable, oldValue, newValue) -> {
-            confCanvas.setHeight(canvasPane.getHeight() - distCanvas.getHeight() - horizontalBar.getHeight());
+        canvasRegion.heightProperty().addListener(((observable, oldValue, newValue) -> {
+            confCanvas.setHeight(canvasRegion.getHeight() - distCanvas.getHeight() - horizontalBar.getHeight());
             updateScrolling();
         }));
 
-        canvasPane.widthProperty().addListener(((observable, oldValue, newValue) -> {
-            distCanvas.setWidth(canvasPane.getWidth() - verticalBar.getWidth());
-            confCanvas.setWidth(canvasPane.getWidth() - verticalBar.getWidth());
+        canvasRegion.widthProperty().addListener(((observable, oldValue, newValue) -> {
+            distCanvas.setWidth(canvasRegion.getWidth() - verticalBar.getWidth());
+            confCanvas.setWidth(canvasRegion.getWidth() - verticalBar.getWidth());
             updateScrolling();
         }));
 

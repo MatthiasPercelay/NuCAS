@@ -12,7 +12,7 @@
   ~ Copyright (c) 2019. All rights reserved
   -->
 
-<AnchorPane fx:id="canvasPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.CanvasController">
+<AnchorPane fx:id="canvasRegion" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.CanvasController">
    <children>
       <HBox fx:id="outerHBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>

@@ -47,6 +47,9 @@ public class Model {
      */
     private boolean hasRun = false;
 
+    /**
+     * currently selected state for editing configuration
+     */
     private int currentEditingState = 0;
 
     private Model(){}
@@ -91,6 +94,13 @@ public class Model {
         return automaton;
     }
 
+    /**
+     * returns the slice of the distribution that maps to [start, end]
+     * should be removed once I settle on how to refactor this part
+     * @param start
+     * @param end
+     * @return
+     */
     public LocalRule[] getArrayOfRules(int start, int end) {
         Distribution dist = automaton.getDistribution();
         LocalRule[] res = new LocalRule[end - start];
@@ -129,6 +139,9 @@ public class Model {
         this.currentEditingState = currentEditingState;
     }
 
+    /**
+     * resets the model and its space time diagram to the starting state
+     */
     public void resetToStart() {
         spaceTimeDiagram.clearComputations();
         hasRun = false;

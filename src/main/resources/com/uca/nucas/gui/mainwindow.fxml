@@ -31,7 +31,7 @@
    </right>
    <center>
        <AnchorPane fx:id="center" BorderPane.alignment="CENTER">
-           <fx:include fx:id="canvasPane" source="canvas.fxml" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+           <fx:include fx:id="canvasRegion" source="canvas.fxml" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
        </AnchorPane>
    </center>
    <left>

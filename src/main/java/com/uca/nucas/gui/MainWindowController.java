@@ -25,7 +25,6 @@ import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 import com.uca.nucas.engine.ruleset.localrule.perturbationexample.LeftGenRule;
 import com.uca.nucas.engine.ruleset.localrule.perturbationexample.MainRule;
 import com.uca.nucas.engine.ruleset.localrule.perturbationexample.RightGenRule;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
@@ -34,7 +33,6 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -82,7 +80,7 @@ public class MainWindowController {
     public AnchorPane center;
 
     @FXML
-    public CanvasController canvasPaneController;
+    public CanvasController canvasRegionController;
 
     @FXML
     private BorderPane hostWindow;
@@ -92,7 +90,7 @@ public class MainWindowController {
 
     public void initialize() {
         model = Model.getModelInstance();
-        canvasPaneController.setModel(model);
+        canvasRegionController.setModel(model);
 
         hostWindow.widthProperty().addListener(this::updateWidth);
 
@@ -102,12 +100,12 @@ public class MainWindowController {
                 .selectedItemProperty()
                 .addListener( (ObservableValue<? extends String> observable, String oldValue, String newValue) ->
                 {
-                    canvasPaneController.setPixelSize(Integer.parseInt(newValue));
-                    canvasPaneController.clearConfCanvas();
+                    canvasRegionController.setPixelSize(Integer.parseInt(newValue));
+                    canvasRegionController.clearConfCanvas();
                     int width = model.getSpaceTimeDiagram().getMaxConfSize();
                     int height = model.getMaxSteps();
-                    canvasPaneController.setupScrollbars(width, height);
-                    canvasPaneController.updateScrolling();
+                    canvasRegionController.setupScrollbars(width, height);
+                    canvasRegionController.updateScrolling();
                 });
 
         stateSelectBox.getSelectionModel()
@@ -138,11 +136,11 @@ public class MainWindowController {
                         else newConf = new LossyConfiguration(contents, -1);
                         std.setStartingConfiguration(newConf);
 
-                        canvasPaneController.clearDistCanvas();
-                        canvasPaneController.clearConfCanvas();
+                        canvasRegionController.clearDistCanvas();
+                        canvasRegionController.clearConfCanvas();
                         model.resetToStart();
                         model.runAutomaton();
-                        canvasPaneController.updateScrolling();
+                        canvasRegionController.updateScrolling();
                     }
                 }));
 
@@ -159,6 +157,9 @@ public class MainWindowController {
         });
     }
 
+    /**
+     * builds an elementary automaton
+     */
     void buildAutomaton() {
         int code = Integer.parseInt(codeField.getText());
         ElementaryRule rule = new ElementaryRule(code);
@@ -170,6 +171,11 @@ public class MainWindowController {
         System.out.println("Automaton added to model");
     }
 
+    /**
+     * buids a randomised configuration with alphabet size noStates
+     * other parameters acquired from UI controls
+     * @param noStates size of the alphabet
+     */
     void buildConfiguration(int noStates) {
         int[] contents = new int[Integer.parseInt(widthField.getText())];
         Random rand = new Random();
@@ -185,6 +191,9 @@ public class MainWindowController {
         System.out.println("Configuration added to model");
     }
 
+    /**
+     * performs setup for the simulation and the display from UI controls
+     */
     void setupModelAndCanvas() {
         stateSelectBox.setItems(FXCollections.observableList(model.getAutomaton().getAlphabet().getStateNames()));
 
@@ -192,10 +201,13 @@ public class MainWindowController {
         model.resetToStart();
         int width = model.getSpaceTimeDiagram().getMaxConfSize();
         int height = model.getMaxSteps();
-        canvasPaneController.setupScrollbars(width, height);
-        canvasPaneController.clearConfCanvas();
+        canvasRegionController.setupScrollbars(width, height);
+        canvasRegionController.clearConfCanvas();
     }
 
+    /**
+     * builds an elementary automaton and runs it
+     */
     public void generateButtonFired() {
         buildAutomaton();
         buildConfiguration(2);
@@ -203,11 +215,14 @@ public class MainWindowController {
         refreshButtonFired();
     }
 
+    /**
+     * refresh the simulation
+     */
     public void refreshButtonFired() {
         model.resetToStart();
         model.runAutomaton();
-        canvasPaneController.clearConfCanvas();
-        canvasPaneController.updateScrolling();
+        canvasRegionController.clearConfCanvas();
+        canvasRegionController.updateScrolling();
         System.out.println("Automaton run");
     }
 
@@ -215,6 +230,9 @@ public class MainWindowController {
         model.runOneStep();
     }
 
+    /**
+     * builds a perturbation model and runs it
+     */
     public void perturbationButtonFired() {
         LocalRule[] distData = new LocalRule[Integer.parseInt(widthField.getText())];
         for (int i = 0; i < distData.length; i++) {
@@ -236,17 +254,23 @@ public class MainWindowController {
         updateWidth();
     }
 
+    /**
+     * update the width of the canvas region according to overall dimensions
+     */
     private void updateWidth() {
-        canvasPaneController.canvasPane.setMinWidth(hostWindow.getWidth());
-        canvasPaneController.canvasPane.setMaxWidth(hostWindow.getWidth());
+        canvasRegionController.canvasRegion.setMinWidth(hostWindow.getWidth());
+        canvasRegionController.canvasRegion.setMaxWidth(hostWindow.getWidth());
     }
 
     private void updateHeight(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
         updateHeight();
     }
 
+    /**
+     * update the height of the canvas region according to overall dimensions
+     */
     private void updateHeight() {
-        canvasPaneController.canvasPane.setMinHeight(hostWindow.getHeight() - top.getHeight());
-        canvasPaneController.canvasPane.setMaxHeight(hostWindow.getHeight() - top.getHeight());
+        canvasRegionController.canvasRegion.setMinHeight(hostWindow.getHeight() - top.getHeight());
+        canvasRegionController.canvasRegion.setMaxHeight(hostWindow.getHeight() - top.getHeight());
     }
 }
