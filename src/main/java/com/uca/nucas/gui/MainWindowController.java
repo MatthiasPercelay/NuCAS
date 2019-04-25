@@ -14,6 +14,8 @@ import com.uca.nucas.engine.Automaton;
 import com.uca.nucas.engine.alphabet.BinaryAlphabet;
 import com.uca.nucas.engine.alphabet.TernaryAlphabet;
 import com.uca.nucas.engine.configuration.Configuration;
+import com.uca.nucas.engine.configuration.GrowingConfiguration;
+import com.uca.nucas.engine.configuration.LossyConfiguration;
 import com.uca.nucas.engine.configuration.WrappingConfiguration;
 import com.uca.nucas.engine.distribution.DefaultBoundDistribution;
 import com.uca.nucas.engine.distribution.Distribution;
@@ -151,7 +153,9 @@ public class MainWindowController {
             contents[i] = rand.nextInt(noStates);
         }
 
-        Configuration conf = new WrappingConfiguration(contents);
+        //Configuration conf = new WrappingConfiguration(contents);
+        Configuration conf = new GrowingConfiguration(contents, 0);
+        //Configuration conf = new LossyConfiguration(contents, -1);
         model.getSpaceTimeDiagram().setStartingConfiguration(conf);
         System.out.println("Configuration added to model");
     }

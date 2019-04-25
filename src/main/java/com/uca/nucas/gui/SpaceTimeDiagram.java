@@ -1,15 +1,19 @@
 package com.uca.nucas.gui;
 
 import com.uca.nucas.engine.configuration.Configuration;
+import com.uca.nucas.engine.ruleset.localrule.perturbationexample.MainRule;
+
 import java.util.ArrayList;
 
 public class SpaceTimeDiagram {
     ArrayList<Configuration> data;
     int maxConfSize;
+    int maxOffset;
 
     public SpaceTimeDiagram() {
         data = new ArrayList<>();
         maxConfSize = 0;
+        maxOffset = 0;
     }
 
     public Configuration get(int index) {
@@ -24,6 +28,10 @@ public class SpaceTimeDiagram {
         return maxConfSize;
     }
 
+    public int getMaxDistOffset() {
+        return maxOffset;
+    }
+
     public int getConfCount() {
         return data.size();
     }
@@ -31,6 +39,7 @@ public class SpaceTimeDiagram {
     public void append(Configuration conf) {
         data.add(conf);
         maxConfSize = Math.max(maxConfSize, conf.getSize());
+        maxOffset = Math.max(maxOffset, conf.getDistributionOffset());
     }
 
     public void clearComputations() {
@@ -56,7 +65,6 @@ public class SpaceTimeDiagram {
 
     public int[] getSegment(int startPoint, int endPoint, int step) {
         Configuration configuration = data.get(step);
-        startPoint = Math.max(0, startPoint);
         startPoint = Math.min(startPoint, maxConfSize);
         endPoint = Math.min(endPoint, maxConfSize);
 

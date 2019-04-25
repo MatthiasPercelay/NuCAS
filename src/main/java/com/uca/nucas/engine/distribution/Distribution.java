@@ -20,5 +20,7 @@ public interface Distribution {
      */
     public LocalRule getLocalRule(int index);
 
+    public void setLocalRule(int index, LocalRule rule) throws UnsupportedOperationException;
+
     public int getRadius();
 }

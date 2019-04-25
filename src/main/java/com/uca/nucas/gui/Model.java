@@ -6,6 +6,8 @@ import com.uca.nucas.engine.distribution.Distribution;
 import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 import javafx.scene.paint.Color;
 
+import java.util.HashMap;
+
 /**
  * Singleton in charge of managing the model of the simulation
  * TODO : make it async because it currently blocks the UI thread
@@ -26,6 +28,10 @@ public class Model {
      * the automaton to use
      */
     private Automaton automaton;
+
+    //TODO : work out better way to handle distribution
+    /*private HashMap<LocalRule, Integer> ruleCounter = new HashMap<>();
+    private HashMap<LocalRule, Color> ruleColors = new HashMap<>();*/
 
     /**
      * the maximum number of steps for the simulation
@@ -93,6 +99,23 @@ public class Model {
         }
         return res;
     }
+
+    /*public void editDistribution(int index, LocalRule rule) {
+        try {
+            automaton.getDistribution().setLocalRule(index, rule);
+            if (!ruleCounter.containsKey(rule)) {
+                ruleCounter.put(rule, 1);
+            } else {
+                ruleCounter.replace(rule, ruleCounter.get(rule) + 1);
+            }
+            LocalRule old = automaton.getDistribution().getLocalRule(index);
+            ruleCounter.replace(old, ruleCounter.get(old) - 1);
+            if (ruleCounter.get(old) == 0) ruleCounter.remove(old);
+
+        } catch (UnsupportedOperationException e) {
+            System.err.println(e.getMessage());
+        }
+    }*/
 
     public SpaceTimeDiagram getSpaceTimeDiagram() {
         return spaceTimeDiagram;

@@ -27,4 +27,13 @@ public abstract class AbstractDistribution implements Distribution{
         }
         return max;
     }
+
+    @Override
+    public void setLocalRule(int index, LocalRule rule) throws UnsupportedOperationException {
+        if (index < 0 || index >= localRules.length) {
+            throw new UnsupportedOperationException("Modifying rules beyond set active area not supported at this time");
+        } else {
+            localRules[index] = rule;
+        }
+    }
 }

@@ -161,14 +161,18 @@ public class CanvasController {
         int cellsToDraw = (int)Math.floor(confCanvas.getWidth() / pixelSize);
         cellsToDraw = Math.min(cellsToDraw, model.getSpaceTimeDiagram().getMaxConfSize());
 
+        int distOffset = model.getSpaceTimeDiagram().getMaxDistOffset();
+
         for (int i = 0; i < stepsToPaint; i++) {
-            drawConfSegment(i * pixelSize, verticalOffset + i, horizontalOffset, horizontalOffset + cellsToDraw, pixelSize);
+            drawConfSegment(i * pixelSize, verticalOffset + i, horizontalOffset - distOffset, horizontalOffset + cellsToDraw - distOffset, pixelSize);
         }
     }
 
+    //TODO : work out a better way to handle distribution
     void paintDistribution(int horizontalOffset) {
         clearDistCanvas();
-        LocalRule[] rules = model.getArrayOfRules(horizontalOffset, horizontalOffset + (int)Math.ceil(distCanvas.getWidth() / pixelSize));
+        int offset = horizontalOffset - model.getSpaceTimeDiagram().getMaxDistOffset();
+        LocalRule[] rules = model.getArrayOfRules(offset, offset + (int)Math.ceil(distCanvas.getWidth() / pixelSize));
         double numRules = 0;
         HashMap<LocalRule, Double> diffRules = new HashMap<>();
         for (int i = 0; i < rules.length; i++) {

@@ -28,4 +28,9 @@ public class UniformDistribution implements Distribution {
     public int getRadius() {
         return rule.getRadius();
     }
+
+    @Override
+    public void setLocalRule(int index, LocalRule rule) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("May not modify uniform distribution. Choose appropriate distribution type");
+    }
 }

@@ -29,7 +29,7 @@ import java.util.Scanner;
  * Simple testing device for elementary automata
  */
 @SuppressWarnings("Duplicates")
-public class ElementaryExample {
+public class ElementaryExample2 {
     public static void main(String[] args) {
         System.out.println("This example program simulates an elementary cellular automaton with a randomly generated");
         System.out.println("configuration, then saves the results to a png image");
@@ -66,7 +66,8 @@ public class ElementaryExample {
         in.close();
 
         int[] contents = new int[size];
-        Random rand = new Random();
+        //Random rand = new Random();
+        Random rand = new Random(42);
         for (int i = 0; i < contents.length; i++) {
             contents[i] = rand.nextInt(2);
         }
@@ -83,21 +84,23 @@ public class ElementaryExample {
 
         Automaton automaton = new Automaton(alphabet, dist, 1);
 
-        BufferedImage img = new BufferedImage(size, steps + 1, BufferedImage.TYPE_INT_RGB);
-        for (int i = 0; i < size; i++) {
-            img.setRGB(i, 0, FXToAWT(alphabet.getColor(conf.getCell(i))).getRGB());
+        int grownsize = size + 2 * steps;
+
+        BufferedImage img = new BufferedImage(grownsize, steps + 1, BufferedImage.TYPE_INT_RGB);
+        for (int i = 0; i < grownsize; i++) {
+            img.setRGB(i, 0, FXToAWT(alphabet.getColor(conf.getCell(i - steps))).getRGB());
         }
 
         for (int y = 1; y < steps; y++) {
             conf = automaton.evaluate(conf);
-            for (int x = 0; x < size; x++) {
-                img.setRGB(x, y, FXToAWT(alphabet.getColor(conf.getCell(x))).getRGB());
+            for (int x = 0; x < grownsize; x++) {
+                img.setRGB(x, y, FXToAWT(alphabet.getColor(conf.getCell(x - steps))).getRGB());
             }
         }
 
         try {
             RenderedImage rimg = img;
-            ImageIO.write(rimg, "png", new File("exampleimage.png"));
+            ImageIO.write(rimg, "png", new File("exampleimage2.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
