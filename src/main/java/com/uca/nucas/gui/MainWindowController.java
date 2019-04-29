@@ -9,6 +9,7 @@ package com.uca.nucas.gui;
 /**
  * Main controller class for the gui
  */
+
 import com.uca.nucas.engine.alphabet.Alphabet;
 import com.uca.nucas.engine.Automaton;
 import com.uca.nucas.engine.alphabet.BinaryAlphabet;
@@ -27,12 +28,14 @@ import com.uca.nucas.engine.ruleset.localrule.perturbationexample.MainRule;
 import com.uca.nucas.engine.ruleset.localrule.perturbationexample.RightGenRule;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -69,7 +72,7 @@ public class MainWindowController {
     public ComboBox<String> stateSelectBox;
 
     @FXML
-    public Canvas stateColorSwatch;
+    public ColorPicker colorPicker;
 
     @FXML
     public ChoiceBox confModeBox;
@@ -98,7 +101,7 @@ public class MainWindowController {
 
         pixelSizeBox.getSelectionModel()
                 .selectedItemProperty()
-                .addListener( (ObservableValue<? extends String> observable, String oldValue, String newValue) ->
+                .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) ->
                 {
                     canvasRegionController.setPixelSize(Integer.parseInt(newValue));
                     canvasRegionController.clearConfCanvas();
@@ -110,19 +113,22 @@ public class MainWindowController {
 
         stateSelectBox.getSelectionModel()
                 .selectedIndexProperty()
-                .addListener((observableValue, number, t1) -> {
-                    model.setCurrentEditingState((int)t1 - 1);
-                    GraphicsContext gc = stateColorSwatch.getGraphicsContext2D();
-                    Paint fill;
-                    try {
-                        fill = model.getStateColor(model.getCurrentEditingState());
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        fill = Color.color(0, 0, 0, 0);
-                    }
-                    gc.setFill(fill);
-                    gc.fillRect(0, 0, 25, 25);
-                }
+                .addListener((observable, oldValue, newValue) -> {
+                            model.setCurrentEditingState((int) newValue - 1);
+                            try {
+                                colorPicker.setValue(model.getStateColor(model.getCurrentEditingState()));
+                            } catch (ArrayIndexOutOfBoundsException e) {
+                            }
+                        }
                 );
+
+        colorPicker.setOnAction(actionEvent -> {
+            try {
+                int state = stateSelectBox.getSelectionModel().getSelectedIndex() - 1;
+                model.getAutomaton().getAlphabet().setColor(state, colorPicker.getValue());
+                canvasRegionController.updateScrolling();
+            } catch (Exception e) {colorPicker.setValue(Color.WHITE);}
+        });
 
         confModeBox.getSelectionModel()
                 .selectedItemProperty()
@@ -174,6 +180,7 @@ public class MainWindowController {
     /**
      * buids a randomised configuration with alphabet size noStates
      * other parameters acquired from UI controls
+     *
      * @param noStates size of the alphabet
      */
     void buildConfiguration(int noStates) {

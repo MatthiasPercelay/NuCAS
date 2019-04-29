@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane fx:id="PatternBoxRoot" prefHeight="80.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uca.nucas.gui.PatternBox">
+   <children>
+      <HBox prefHeight="80.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <VBox prefHeight="80.0" prefWidth="50.0">
+               <children>
+                  <Button fx:id="upButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0" text="up">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="downButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0" text="down">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <ScrollPane fx:id="neighborsScrollPane" hbarPolicy="ALWAYS" prefHeight="80.0" prefWidth="450.0" vbarPolicy="NEVER">
+               <content>
+                  <HBox fx:id="NeighborsBox" prefHeight="50.0" />
+               </content>
+            </ScrollPane>
+            <VBox>
+               <children>
+                  <Pane fx:id="newStatePane" prefHeight="50.0" prefWidth="100.0" />
+                  <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="28.0" prefWidth="98.0" text="Delete" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
