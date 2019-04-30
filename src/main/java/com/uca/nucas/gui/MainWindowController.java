@@ -23,11 +23,13 @@ import com.uca.nucas.engine.distribution.Distribution;
 import com.uca.nucas.engine.distribution.UniformDistribution;
 import com.uca.nucas.engine.ruleset.localrule.ElementaryRule;
 import com.uca.nucas.engine.ruleset.localrule.LocalRule;
+import com.uca.nucas.engine.ruleset.localrule.arbitraryrule.ArbitraryRule;
 import com.uca.nucas.engine.ruleset.localrule.perturbationexample.LeftGenRule;
 import com.uca.nucas.engine.ruleset.localrule.perturbationexample.MainRule;
 import com.uca.nucas.engine.ruleset.localrule.perturbationexample.RightGenRule;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.css.Rule;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -39,6 +41,7 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 
@@ -88,6 +91,11 @@ public class MainWindowController {
 
     @FXML
     public CanvasController canvasRegionController;
+
+    @FXML
+    public Button customButton;
+    @FXML
+    public Button newCustomButton;
 
     @FXML
     private BorderPane hostWindow;
@@ -175,6 +183,24 @@ public class MainWindowController {
                         canvasRegionController.updateScrolling();
                     }
                 }));
+
+        newCustomButton.setOnAction(actionEvent -> {
+            Dialog<LocalRule> ruleDialog = new Dialog<>();
+            RuleDialog dialogPane = new RuleDialog();
+            ruleDialog.setDialogPane(dialogPane);
+
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            ruleDialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+            ruleDialog.setResultConverter(dialogButton -> {
+                if (dialogButton == saveButtonType) {
+                    return new ArbitraryRule(dialogPane.neighbors(), dialogPane.collectPatterns(), dialogPane.defo);
+                }
+                return null;
+            });
+
+            Optional<LocalRule> result = ruleDialog.showAndWait();
+        });
 
         /**
          * event handler that finalises setup the first time the user interacts with the program, then removes itself

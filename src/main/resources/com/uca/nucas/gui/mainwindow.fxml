@@ -55,6 +55,16 @@
                         <Insets left="5.0" top="5.0" />
                      </VBox.margin>
                   </ColorPicker>
+                  <Separator prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Separator>
+                  <Button fx:id="newCustomButton" mnemonicParsing="false" text="New Custom Rule">
+                     <VBox.margin>
+                        <Insets left="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Button>
                </children>
             </VBox>
          </children></AnchorPane>
@@ -112,6 +122,8 @@
                   <TextField fx:id="codeField" prefWidth="80.0" promptText="code" text="110" />
                   <Separator orientation="VERTICAL" prefHeight="30.0" />
                   <Button fx:id="perturbationButton" mnemonicParsing="false" onAction="#perturbationButtonFired" text="perturbation model" />
+                  <Separator orientation="VERTICAL" prefHeight="30.0" />
+                  <Button fx:id="customButton" mnemonicParsing="false" text="custom" />
                   <Separator orientation="VERTICAL" prefHeight="30.0" />
                   <ChoiceBox fx:id="confModeBox" prefWidth="100.0" value="wrapping">
                       <items>

@@ -23,4 +23,9 @@ public class LeftGenRule implements LocalRule {
     public boolean equals(Object obj) {
         return (obj instanceof LeftGenRule);
     }
+
+    @Override
+    public String toString() {
+        return "LeftGenRule";
+    }
 }

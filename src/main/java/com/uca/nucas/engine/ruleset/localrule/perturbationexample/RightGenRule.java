@@ -19,10 +19,13 @@ public class RightGenRule implements LocalRule {
         return "RightGenRule".hashCode();
     }
 
-
-
     @Override
     public boolean equals(Object obj) {
         return (obj instanceof RightGenRule);
+    }
+
+    @Override
+    public String toString() {
+        return "RightGenRule";
     }
 }
