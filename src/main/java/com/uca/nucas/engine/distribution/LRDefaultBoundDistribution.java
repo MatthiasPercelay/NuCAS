@@ -8,6 +8,9 @@ package com.uca.nucas.engine.distribution;
 
 import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 /**
  * Distribution bound by a different default rule at each end
  * => period 1 pnu-ca
@@ -27,5 +30,14 @@ public class LRDefaultBoundDistribution extends AbstractDistribution{
         if (index < 0) return leftDefault;
         else if (index >= localRules.length) return rightDefault;
         else return localRules[index];
+    }
+
+    @Override
+    public HashSet<LocalRule> getSetOfRules() {
+        var res = new HashSet<LocalRule>();
+        res.addAll(Arrays.asList(localRules));
+        res.add(leftDefault);
+        res.add(rightDefault);
+        return res;
     }
 }

@@ -29,10 +29,6 @@ public class Model {
      */
     private Automaton automaton;
 
-    //TODO : work out better way to handle distribution
-    /*private HashMap<LocalRule, Integer> ruleCounter = new HashMap<>();
-    private HashMap<LocalRule, Color> ruleColors = new HashMap<>();*/
-
     /**
      * the maximum number of steps for the simulation
      * may be removed at a later date if a convenient way to run a simulation
@@ -51,6 +47,8 @@ public class Model {
      * currently selected state for editing configuration
      */
     private int currentEditingState = 0;
+
+    private LocalRule currentEditingRule = null;
 
     private Model(){}
 
@@ -110,22 +108,13 @@ public class Model {
         return res;
     }
 
-    /*public void editDistribution(int index, LocalRule rule) {
+    public void editDistribution(int index, LocalRule rule) {
         try {
             automaton.getDistribution().setLocalRule(index, rule);
-            if (!ruleCounter.containsKey(rule)) {
-                ruleCounter.put(rule, 1);
-            } else {
-                ruleCounter.replace(rule, ruleCounter.get(rule) + 1);
-            }
-            LocalRule old = automaton.getDistribution().getLocalRule(index);
-            ruleCounter.replace(old, ruleCounter.get(old) - 1);
-            if (ruleCounter.get(old) == 0) ruleCounter.remove(old);
-
         } catch (UnsupportedOperationException e) {
             System.err.println(e.getMessage());
         }
-    }*/
+    }
 
     public SpaceTimeDiagram getSpaceTimeDiagram() {
         return spaceTimeDiagram;
@@ -137,6 +126,14 @@ public class Model {
 
     public void setCurrentEditingState(int currentEditingState) {
         this.currentEditingState = currentEditingState;
+    }
+
+    public LocalRule getCurrentEditingRule() {
+        return currentEditingRule;
+    }
+
+    public void setCurrentEditingRule(LocalRule currentEditingRule) {
+        this.currentEditingRule = currentEditingRule;
     }
 
     /**

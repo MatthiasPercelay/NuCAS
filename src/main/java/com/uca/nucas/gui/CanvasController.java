@@ -6,6 +6,7 @@
 
 package com.uca.nucas.gui;
 
+import com.uca.nucas.engine.Automaton;
 import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,7 +22,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-import java.util.HashMap;
 
 /**
  * Controller for the canvas and its containing pane
@@ -90,8 +90,8 @@ public class CanvasController {
 
         confCanvas.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-                int clickX = (int)Math.floor(mouseEvent.getX() / pixelSize);
-                int clickY = (int)Math.floor(mouseEvent.getY() / pixelSize);
+                int clickX = pixelFloor(mouseEvent.getX());
+                int clickY = pixelFloor(mouseEvent.getY());
                 int offset = model.getSpaceTimeDiagram().getMaxDistOffset();
                 model.getSpaceTimeDiagram().editStartingConfiguration((int)horizontalBar.getValue() + clickX - offset, model.getCurrentEditingState());
                 updateScrolling();
@@ -100,19 +100,28 @@ public class CanvasController {
 
         confCanvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
             if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-                pressedX = (int)Math.floor(mouseEvent.getX() / pixelSize);
+                pressedX = pixelFloor(mouseEvent.getX());
                 rightClickPressed = true;
             }
         });
 
         confCanvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseEvent -> {
             if (mouseEvent.getButton() == MouseButton.SECONDARY && rightClickPressed) {
-                int endX = (int) Math.floor(mouseEvent.getX() / pixelSize);
+                int endX = pixelFloor(mouseEvent.getX());
                 int offset = model.getSpaceTimeDiagram().getMaxDistOffset();
                 for (int i = pressedX; i <= endX; i++) {
                     model.getSpaceTimeDiagram().editStartingConfiguration((int)horizontalBar.getValue() + i - offset, model.getCurrentEditingState());
                 }
                 rightClickPressed = false;
+            }
+        });
+
+        distCanvas.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+                int clickX = pixelFloor(mouseEvent.getX());
+                int offset = model.getSpaceTimeDiagram().getMaxDistOffset();
+                model.editDistribution(clickX + offset, model.getCurrentEditingRule());
+                updateScrolling();
             }
         });
     }
@@ -151,9 +160,9 @@ public class CanvasController {
 
     void paintWholeCanvas(int horizontalOffset, int verticalOffset) {
         clearConfCanvas();
-        int stepsToPaint = (int)Math.floor(confCanvas.getHeight() / pixelSize);
+        int stepsToPaint = pixelFloor(confCanvas.getHeight());
         stepsToPaint = Math.min(stepsToPaint, model.getSpaceTimeDiagram().getConfCount() - verticalOffset);
-        int cellsToDraw = (int)Math.floor(confCanvas.getWidth() / pixelSize);
+        int cellsToDraw = pixelFloor(confCanvas.getWidth());
         cellsToDraw = Math.min(cellsToDraw, model.getSpaceTimeDiagram().getMaxConfSize());
 
         int distOffset = model.getSpaceTimeDiagram().getMaxDistOffset();
@@ -165,7 +174,7 @@ public class CanvasController {
 
     //TODO : work out a better way to handle distribution
     void paintDistribution(int horizontalOffset) {
-        clearDistCanvas();
+        /*clearDistCanvas();
         int offset = horizontalOffset - model.getSpaceTimeDiagram().getMaxDistOffset();
         LocalRule[] rules = model.getArrayOfRules(offset, offset + (int)Math.ceil(distCanvas.getWidth() / pixelSize));
         double numRules = 0;
@@ -187,8 +196,18 @@ public class CanvasController {
             for (int j = 0; j < distCanvas.getHeight(); j++) {
                 pw.setColor(i, j, colors[(int)Math.ceil(i/pixelSize)]);
             }
-        }
+        }*/
 
+        clearDistCanvas();
+        Automaton auto = model.getAutomaton();
+        int offset = horizontalOffset - model.getSpaceTimeDiagram().getMaxDistOffset();
+        PixelWriter pw = distCTX.getPixelWriter();
+        LocalRule[] rules = model.getArrayOfRules(offset, offset + pixelFloor(distCanvas.getWidth()));
+        for (int i = 0; i < (pixelSize * pixelFloor(distCanvas.getWidth())); i++) {
+            for (int j = 0; j < distCanvas.getHeight(); j++) {
+                pw.setColor(i, j, auto.getRuleColor(rules[pixelFloor(i)]));
+            }
+        }
     }
 
     public void updateScrolling(){
@@ -249,4 +268,7 @@ public class CanvasController {
         pixelSize = newSize;
     }
 
+    public int pixelFloor(double x) {
+        return (int) Math.floor(x / pixelSize);
+    }
 }

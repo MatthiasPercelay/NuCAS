@@ -28,20 +28,17 @@ import com.uca.nucas.engine.ruleset.localrule.perturbationexample.MainRule;
 import com.uca.nucas.engine.ruleset.localrule.perturbationexample.RightGenRule;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -72,12 +69,19 @@ public class MainWindowController {
     public ComboBox<String> stateSelectBox;
 
     @FXML
-    public ColorPicker colorPicker;
+    public ColorPicker stateColorPicker;
 
     @FXML
     public ChoiceBox confModeBox;
 
-    Model model = null;
+    @FXML
+    public AnchorPane right;
+
+    @FXML
+    public ChoiceBox<LocalRule> ruleSelectBox;
+
+    @FXML
+    public ColorPicker ruleColorPicker;
 
     @FXML
     public AnchorPane center;
@@ -90,6 +94,8 @@ public class MainWindowController {
 
     @FXML
     VBox top;
+
+    Model model = null;
 
     public void initialize() {
         model = Model.getModelInstance();
@@ -116,18 +122,38 @@ public class MainWindowController {
                 .addListener((observable, oldValue, newValue) -> {
                             model.setCurrentEditingState((int) newValue - 1);
                             try {
-                                colorPicker.setValue(model.getStateColor(model.getCurrentEditingState()));
+                                stateColorPicker.setValue(model.getStateColor(model.getCurrentEditingState()));
                             } catch (ArrayIndexOutOfBoundsException e) {
                             }
                         }
                 );
 
-        colorPicker.setOnAction(actionEvent -> {
+        ruleSelectBox.getSelectionModel()
+                .selectedItemProperty()
+                .addListener(((observable, oldRule, newRule) -> {
+                    model.setCurrentEditingRule(newRule);
+                    try {
+                        ruleColorPicker.setValue(model.getAutomaton().getRuleColor(model.getCurrentEditingRule()));
+                    } catch (Exception e) {}
+                }));
+
+        stateColorPicker.setOnAction(actionEvent -> {
             try {
                 int state = stateSelectBox.getSelectionModel().getSelectedIndex() - 1;
-                model.getAutomaton().getAlphabet().setColor(state, colorPicker.getValue());
+                model.getAutomaton().getAlphabet().setColor(state, stateColorPicker.getValue());
                 canvasRegionController.updateScrolling();
-            } catch (Exception e) {colorPicker.setValue(Color.WHITE);}
+            } catch (Exception e) {
+                stateColorPicker.setValue(Color.WHITE);}
+        });
+
+        ruleColorPicker.setOnAction(actionEvent -> {
+            try {
+                LocalRule rule = ruleSelectBox.getValue();
+                model.getAutomaton().setRuleColor(rule, ruleColorPicker.getValue());
+                canvasRegionController.updateScrolling();
+            } catch (Exception e) {
+                ruleColorPicker.setValue(Color.WHITE);
+            }
         });
 
         confModeBox.getSelectionModel()
@@ -203,6 +229,8 @@ public class MainWindowController {
      */
     void setupModelAndCanvas() {
         stateSelectBox.setItems(FXCollections.observableList(model.getAutomaton().getAlphabet().getStateNames()));
+        List<LocalRule> listRules = new ArrayList<>(model.getAutomaton().getDistribution().getSetOfRules());
+        ruleSelectBox.setItems(FXCollections.observableList(listRules));
 
         model.setMaxSteps(Integer.parseInt(stepsField.getText()));
         model.resetToStart();
@@ -265,8 +293,8 @@ public class MainWindowController {
      * update the width of the canvas region according to overall dimensions
      */
     private void updateWidth() {
-        canvasRegionController.canvasRegion.setMinWidth(hostWindow.getWidth());
-        canvasRegionController.canvasRegion.setMaxWidth(hostWindow.getWidth());
+        canvasRegionController.canvasRegion.setMinWidth(hostWindow.getWidth() - right.getWidth());
+        canvasRegionController.canvasRegion.setMaxWidth(hostWindow.getWidth() - right.getWidth());
     }
 
     private void updateHeight(ObservableValue<? extends Number> observableValue, Number number, Number t1) {

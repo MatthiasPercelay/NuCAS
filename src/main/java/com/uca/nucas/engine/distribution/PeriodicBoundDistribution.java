@@ -8,6 +8,9 @@ package com.uca.nucas.engine.distribution;
 
 import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 /**
  * Distribution bound by a different periodic region at each end
  * => pnu-ca
@@ -31,5 +34,14 @@ public class PeriodicBoundDistribution extends AbstractDistribution{
         } else {
             return localRules[index];
         }
+    }
+
+    @Override
+    public HashSet<LocalRule> getSetOfRules() {
+        var res = new HashSet<LocalRule>();
+        res.addAll(Arrays.asList(localRules));
+        res.addAll(Arrays.asList(leftPattern));
+        res.addAll(Arrays.asList(rightPattern));
+        return res;
     }
 }

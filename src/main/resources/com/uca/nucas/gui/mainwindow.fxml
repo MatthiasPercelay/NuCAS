@@ -2,6 +2,7 @@
 
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ColorPicker?>
@@ -27,7 +28,36 @@
       <AnchorPane fx:id="bottom" disable="true" prefHeight="0.0" BorderPane.alignment="CENTER" />
    </bottom>
    <right>
-      <AnchorPane fx:id="right" disable="true" prefWidth="0.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="right" prefWidth="0.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <ComboBox fx:id="stateSelectBox" prefWidth="80.0" promptText="state">
+                     <VBox.margin>
+                        <Insets left="5.0" top="5.0" />
+                     </VBox.margin></ComboBox>
+                  <ColorPicker fx:id="stateColorPicker">
+                     <VBox.margin>
+                        <Insets left="5.0" top="5.0" />
+                     </VBox.margin></ColorPicker>
+                  <Separator prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Separator>
+                  <ChoiceBox fx:id="ruleSelectBox" prefWidth="150.0">
+                     <VBox.margin>
+                        <Insets left="5.0" top="5.0" />
+                     </VBox.margin>
+                  </ChoiceBox>
+                  <ColorPicker fx:id="ruleColorPicker">
+                     <VBox.margin>
+                        <Insets left="5.0" top="5.0" />
+                     </VBox.margin>
+                  </ColorPicker>
+               </children>
+            </VBox>
+         </children></AnchorPane>
    </right>
    <center>
        <AnchorPane fx:id="center" BorderPane.alignment="CENTER">
@@ -92,8 +122,6 @@
                           </FXCollections>
                       </items>
                   </ChoiceBox>
-                  <ComboBox fx:id="stateSelectBox" prefWidth="80.0" promptText="state" />
-                  <ColorPicker fx:id="colorPicker" />
               </items>
             </ToolBar>
          </children>

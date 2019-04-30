@@ -8,6 +8,8 @@ package com.uca.nucas.engine.distribution;
 
 import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 
+import java.util.HashSet;
+
 /**
  * Interface defining operations on distributions of rules
  */
@@ -23,4 +25,6 @@ public interface Distribution {
     public void setLocalRule(int index, LocalRule rule) throws UnsupportedOperationException;
 
     public int getRadius();
+
+    public HashSet<LocalRule> getSetOfRules();
 }

@@ -8,6 +8,8 @@ package com.uca.nucas.engine.distribution;
 
 import com.uca.nucas.engine.ruleset.localrule.LocalRule;
 
+import java.util.HashSet;
+
 /**
  * Distribution that only supports a single rule
  * => classical CA
@@ -32,5 +34,12 @@ public class UniformDistribution implements Distribution {
     @Override
     public void setLocalRule(int index, LocalRule rule) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("May not modify uniform distribution. Choose appropriate distribution type");
+    }
+
+    @Override
+    public HashSet<LocalRule> getSetOfRules() {
+        var res = new HashSet<LocalRule>();
+        res.add(rule);
+        return res;
     }
 }

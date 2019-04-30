@@ -29,4 +29,9 @@ public class MainRule implements LocalRule {
     public boolean equals(Object obj) {
         return (obj instanceof MainRule);
     }
+
+    @Override
+    public String toString() {
+        return "MainRule";
+    }
 }
